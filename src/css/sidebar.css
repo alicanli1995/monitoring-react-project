@@ -1,0 +1,10 @@
+.mySlider {
+  width: 300px;
+  transition: all 0.3s linear;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.mySlider.closed {
+  width: 0 ;
+}
