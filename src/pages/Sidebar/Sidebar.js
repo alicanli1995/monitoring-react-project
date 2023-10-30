@@ -1,18 +1,109 @@
 import feather from 'feather-icons';
-import React, {useState} from 'react';
-import Page from "../Homepage/Page";
+import React, {useEffect, useState} from 'react';
+import HomePage from "../HomePage/HomePage";
 import "../../css/sidebar.css";
-import {FormSelect, ToggleButton} from "react-bootstrap";
-import {Switch} from "@mui/material";
+import SwitchButton from "../../components/SwitchButton";
+import Pusher from "../Admin/js/pusher.min";
+import services from "../../services";
+import {confirm, successAlert, warningAlert} from "../Admin/js/attention";
 
-function Layout() {
+function Sidebar() {
   const [showSidebar, setShowSidebar] = useState(true);
   const sidebarClass = showSidebar ? '' : 'closed';
+  const [showMonitoring, setShowMonitoring] = useState(false);
+  const pusherKey = "abc123";
 
-  function handleLiveMonitoring() {
-    let liveMonitoring = document.getElementById('monitoring-live');
-    liveMonitoring.checked = !!liveMonitoring.checked;
-  }
+  const handleMonitoringChange = () => {
+    document.getElementById("monitoring-live").addEventListener("change",
+        function () {
+          if (!showMonitoring) {
+            confirm({
+              html: "Are you sure you want to disable live monitoring?",
+              callback: function (result) {
+                if (result) {
+                  updateSystemPref("monitoring_live", "0")
+                  toggleMonitoring(true);
+                }
+              }
+            })
+          } else {
+            updateSystemPref("monitoring_live", "1")
+            toggleMonitoring(false);
+          }
+        })
+  };
+
+  const updateSystemPref = (prefName, prefValue) => {
+  };
+
+  const toggleMonitoring = (param) => {
+    setShowMonitoring(param)
+
+    let body = {
+      enabled: param,
+    }
+
+    services.monitoringApiService.toggleMonitoring(body)
+    .then((res) => {
+      if (res.data.ok === true) {
+        successAlert(res.data.message)
+      } else {
+        warningAlert(res.data.message)
+      }
+    }).catch((err) => {
+      warningAlert(err.message)
+    });
+  };
+
+  useEffect(() => {
+
+  }, []);
+
+  useEffect(() => {
+    let pusher = new Pusher(pusherKey, {
+      authEndPoint: "/pusher/auth",
+      wsHost: "localhost",
+      wsPort: 4001,
+      forceTLS: false,
+      enabledTransports: ["ws", "wss"],
+      disabledTransports: []
+    });
+
+    const publicChannel = pusher.subscribe("public-channel");
+
+    publicChannel.bind("app-starting", function (data) {
+      setShowMonitoring(true);
+      successAlert(data.message);
+    });
+
+    publicChannel.bind("app-stopping", function (data) {
+      warningAlert(data.message);
+      setShowMonitoring(false);
+
+      // Rest of your logic for stopping app
+    });
+
+    publicChannel.bind("schedule-changed-event", function (data) {
+      // Handle schedule changes
+    });
+
+    publicChannel.bind("schedule-item-removed-event", function (data) {
+      // Handle removed schedule items
+    });
+
+    publicChannel.bind("host-service-status-changed", function (data) {
+      // Handle host-service status changes
+    });
+
+    publicChannel.bind("host-service-count-changed", function (data) {
+      // Handle host-service count changes
+    });
+
+    return () => {
+      // Cleanup code for when component unmounts
+      pusher.disconnect();
+    };
+  }, []);
 
   return (
       <>
@@ -21,8 +112,10 @@ function Layout() {
             <nav id="sidebar" className={`mySlider ${sidebarClass}`}>
               <div className="sidebar-content js-simplebar">
                 <a className="sidebar-brand text-center" href="/">
-                <span className="align-middle mr-3">
-                    <span className="fa fa-eye"></span> Observer
+                <span className="align-middle">
+                    <span className="fa fa-eye"
+                          style={{marginLeft: '-0.7rem'}}
+                    /> Observer
                 </span>
                 </a>
 
@@ -33,6 +126,7 @@ function Layout() {
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['compass'].toSvg()}}/>
                       <span
+                          style={{marginLeft: '-0.7rem'}}
                           className="align-middle">Overview</span>
                     </a>
                   </li>
@@ -43,6 +137,7 @@ function Layout() {
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['server'].toSvg()}}/>
                       <span
+                          style={{marginLeft: '-0.7rem'}}
                           className="align-middle">Hosts</span>
                     </a>
                   </li>
@@ -52,6 +147,7 @@ function Layout() {
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['check-circle'].toSvg()}}/>
                       <span
+                          style={{marginLeft: '-0.7rem'}}
                           className="align-middle">Events</span>
                     </a>
                   </li>
@@ -62,6 +158,7 @@ function Layout() {
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['calendar'].toSvg()}}/>
                       <span
+                          style={{marginLeft: '-0.7rem'}}
                           className="align-middle">Schedule</span>
                     </a>
                   </li>
@@ -72,6 +169,7 @@ function Layout() {
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['settings'].toSvg()}}/>
                       <span
+                          style={{marginLeft: '-0.7rem'}}
                           className="align-middle">Settings</span>
                     </a>
                   </li>
@@ -81,6 +179,7 @@ function Layout() {
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['users'].toSvg()}}/>
                       <span
+                          style={{marginLeft: '-0.7rem'}}
                           className="align-middle">Users</span>
                     </a>
                   </li>
@@ -90,10 +189,12 @@ function Layout() {
                   </li>
 
                   <li className="sidebar-item">
-                    <a className="sidebar-link" href="/user/logout">
+                    <a className="sidebar-link mb-2"
+                       href="/user/logout">
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['log-out'].toSvg()}}/>
                       <span
+                          style={{marginLeft: '-0.7rem'}}
                           className="align-middle">Logout</span>
                     </a>
                   </li>
@@ -113,15 +214,17 @@ function Layout() {
               </a>
 
               <div className="navbar-collapse collapse">
-                <form className="form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-                  <Switch
-                      onClick={handleLiveMonitoring}
-                      id={"monitoring-live"}
-                      defaultChecked/>
-                  <label className="form-check-label"
-                         htmlFor="monitoring-live">Live
-                    Monitoring</label>
-                </form>
+                <div
+                    className={"form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"}
+                >
+                  <SwitchButton
+                      label="Monitoring"
+                      checked={showMonitoring}
+                      handleToggle={() => {
+                        handleMonitoringChange()
+                      }}
+                  />
+                </div>
               </div>
             </nav>
 
@@ -133,7 +236,7 @@ function Layout() {
                     <div className="card">
 
                       <div className="card-body">
-                        <Page/>
+                        <HomePage/>
                       </div>
                     </div>
                   </div>
@@ -164,4 +267,4 @@ function Layout() {
   );
 }
 
-export default Layout;
+export default Sidebar;

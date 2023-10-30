@@ -1,8 +1,34 @@
-import React from "react";
-import "../../css/styles.css";
+import React, {useEffect, useState} from "react";
 import "../Admin/css/app.css";
+import services from "../../services";
+import {warningAlert} from "../Admin/js/attention";
 
-function Page() {
+function HomePage() {
+  const [hosts, setHosts] = useState([]);
+  const [servicesCount, setServicesCount] = useState({
+    healthy: 0,
+    warning: 0,
+    problem: 0,
+    pending: 0,
+  });
+
+  useEffect(() => {
+    services.monitoringApiService.getAllHosts().then((res) => {
+      if (res.data.ok === true) {
+        setHosts(res.data.hosts)
+        console.log(res.data)
+        setServicesCount({
+          healthy: res.data.healthy,
+          warning: res.data.warning,
+          problem: res.data.problem,
+          pending: res.data.pending,
+        })
+      }
+    }).catch((err) => {
+      warningAlert(err.message)
+    });
+  }, []);
+
   return (
       <>
         <div className="row">
@@ -24,7 +50,7 @@ function Page() {
                  }}
             >
               <div className="card-body text-success">
-                <span id="healthy_count"> 0 </span> Healthy service(s)
+                <span id="healthy_count"> {servicesCount.healthy} </span> Healthy service(s)
               </div>
               <div
                   className="card-footer d-flex align-items-center justify-content-between"
@@ -52,7 +78,7 @@ function Page() {
               }
             }>
               <div className="card-body text-warning"><span
-                  id="warning_count"> 2 </span> Warning
+                  id="warning_count">{servicesCount.warning} </span> Warning
                 service(s)
               </div>
               <div
@@ -79,7 +105,7 @@ function Page() {
               }
             }>
               <div className="card-body text-danger">
-                <span id="problem_count"> 2 </span> Problem
+                <span id="problem_count"> {servicesCount.problem} </span> Problem
                 service(s)
               </div>
               <div
@@ -106,8 +132,7 @@ function Page() {
               }
             }>
               <div className="card-body text-dark">
-                    <span id="pending_count">
-                    </span> 2 Pending service(s)
+                    <span id="pending_count"> {servicesCount.pending}  </span> Pending service(s)
               </div>
               <div
                   className="card-footer d-flex align-items-center justify-content-between"
@@ -143,18 +168,42 @@ function Page() {
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <td><a href="/src/pages/Admin/host/{{.ID}}">HostName</a></td>
-                <td>
-                  <span className="badge bg-info">Service.ServiceName</span>
-                </td>
-                <td>OS</td>
-                <td>Location</td>
-                <td>
-                  <span className="badge bg-success">Active</span>
-                  <span className="badge bg-danger">Inactive</span>
-                </td>
-              </tr>
+              {/*<tr>*/}
+              {/*  <td><a href="/src/pages/Admin/host/{{.ID}}">HostName</a></td>*/}
+              {/*  <td>*/}
+              {/*    <span className="badge bg-info">Service</span>*/}
+              {/*  </td>*/}
+              {/*  <td>OS</td>*/}
+              {/*  <td>Location</td>*/}
+              {/*  <td>*/}
+              {/*    <span className="badge bg-success">Active</span>*/}
+              {/*  </td>*/}
+              {/*</tr>*/}
+              {hosts && (hosts.length > 0 ? hosts.map((host) => {
+                return (
+                    <tr key={'host-' + host.id}>
+                      <td><a
+                          href="/src/pages/Admin/host/{{.ID}}">{host.HostName}</a>
+                      </td>
+                      <td>
+                        <span
+                            className="badge bg-info">{host.HostServices[0].Service.ServiceName}</span>
+                      </td>
+                      <td>{host.OS}</td>
+                      <td>{host.Location}</td>
+                      <td>
+                        {
+                          host.Active === 1 ?
+                              <span className="badge bg-success">Active</span>
+                              :
+                              <span className="badge bg-danger">Inactive</span>
+                        }
+                      </td>
+                    </tr>
+                )
+              }) : <tr>
+                <td colSpan={5}>No Data</td>
+              </tr>)}
               </tbody>
             </table>
           </div>
@@ -163,4 +212,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default HomePage;

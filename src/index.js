@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Layout from "./pages/Layout/Layout";
+import Sidebar from "./pages/Sidebar/Sidebar";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-      <Layout/>
+      <Sidebar/>
     </React.StrictMode>
 );
 
