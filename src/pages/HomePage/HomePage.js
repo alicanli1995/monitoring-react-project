@@ -1,82 +1,18 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "../Admin/css/app.css";
 import services from "../../services";
-import Pusher from "../Admin/js/pusher.min";
-import {successAlert, warningAlert} from "../Admin/js/attention";
+import {warningAlert} from "../Admin/js/attention";
+import {DataContext} from "../misc/DataContextProvider";
 
-function HomePage() {
+const HomePage = () => {
   const [hosts, setHosts] = useState([]);
-  const [servicesCount, setServicesCount] = useState({
-    healthy: 0,
-    warning: 0,
-    problem: 0,
-    pending: 0,
-  });
-  const pusherKey = "abc123";
 
-  useEffect(() => {
-    let pusher = new Pusher(pusherKey, {
-      authEndPoint: "/pusher/auth",
-      wsHost: "localhost",
-      wsPort: 4001,
-      forceTLS: false,
-      enabledTransports: ["ws", "wss"],
-      disabledTransports: []
-    });
-
-    const publicChannel = pusher.subscribe("public-channel");
-
-    publicChannel.bind("app-starting", function (data) {
-      successAlert(data.message);
-
-      console.log(data, "data")
-    });
-
-    publicChannel.bind("app-stopping", function (data) {
-      warningAlert(data.message);
-
-      // Rest of your logic for stopping app
-
-      console.log(data, "data")
-    });
-
-    publicChannel.bind("schedule-changed-event", function (data) {
-      // Handle schedule changes
-    });
-
-    publicChannel.bind("schedule-item-removed-event", function (data) {
-      // Handle removed schedule items
-    });
-
-    publicChannel.bind("host-service-status-changed", function (data) {
-      // Handle host-service status changes
-    });
-
-    publicChannel.bind("host-service-count-changed", function (data) {
-      setServicesCount({
-        healthy: data.healthy_count,
-        warning: data.warning_count,
-        problem: data.problem_count,
-        pending: data.pending_count,
-      })
-    });
-
-    return () => {
-      // Cleanup code for when component unmounts
-      pusher.disconnect();
-    };
-  }, []);
+  const {servicesCount} = useContext(DataContext)
 
   useEffect(() => {
     services.monitoringApiService.getAllHosts().then((res) => {
       if (res.data.ok === true) {
         setHosts(res.data.hosts)
-        setServicesCount({
-          healthy: res.data.healthy,
-          warning: res.data.warning,
-          problem: res.data.problem,
-          pending: res.data.pending,
-        })
       }
     }).catch((err) => {
       warningAlert(err.message)
@@ -104,7 +40,8 @@ function HomePage() {
                  }}
             >
               <div className="card-body text-success">
-                  <span id="healthy_count"> {servicesCount.healthy} </span> Healthy
+                <span
+                    id="healthy_count"> {servicesCount?.healthy} </span> Healthy
                 service(s)
               </div>
               <div
@@ -133,7 +70,7 @@ function HomePage() {
               }
             }>
               <div className="card-body text-warning"><span
-                  id="warning_count">{servicesCount.warning} </span> Warning
+                  id="warning_count">{servicesCount?.warning} </span> Warning
                 service(s)
               </div>
               <div
@@ -162,7 +99,7 @@ function HomePage() {
             }>
               <div className="card-body text-danger">
                             <span
-                                id="problem_count"> {servicesCount.problem} </span> Problem
+                                id="problem_count"> {servicesCount?.problem} </span> Problem
                 service(s)
               </div>
               <div
@@ -191,7 +128,7 @@ function HomePage() {
             }>
               <div className="card-body text-dark">
                             <span
-                                id="pending_count"> {servicesCount.pending}  </span> Pending
+                                id="pending_count"> {servicesCount?.pending}  </span> Pending
                 service(s)
               </div>
               <div
@@ -246,7 +183,8 @@ function HomePage() {
                           host.Active === 1 ?
                               <span className="badge bg-success">Active</span>
                               :
-                              <span className="badge bg-danger">Inactive</span>
+                              <span
+                                  className="badge bg-danger">Inactive</span>
                         }
                       </td>
                     </tr>
