@@ -13,6 +13,7 @@
     <orderEntry type="library" name="font-awesome" level="application" />
     <orderEntry type="library" name="bootstrap.native" level="application" />
     <orderEntry type="library" name="sweetalert2" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="2a6d3dc1-c458-4180-887b-ba490fb2b854" />

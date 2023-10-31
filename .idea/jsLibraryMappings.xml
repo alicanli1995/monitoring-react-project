@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{@sweetalert2/theme-bootstrap-4, bootstrap.native, font-awesome, notie, sweetalert2}" />
+    <file url="PROJECT" libraries="{@sweetalert2/theme-bootstrap-4, bootstrap.native, font-awesome, jquery, notie, sweetalert2}" />
   </component>
 </project>

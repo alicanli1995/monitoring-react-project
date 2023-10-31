@@ -1,17 +1,28 @@
 import feather from 'feather-icons';
 import React, {useEffect, useState} from 'react';
-import HomePage from "../HomePage/HomePage";
 import "../../css/sidebar.css";
 import SwitchButton from "../../components/SwitchButton";
-import Pusher from "../Admin/js/pusher.min";
 import services from "../../services";
 import {confirm, successAlert, warningAlert} from "../Admin/js/attention";
 
-function Sidebar() {
+function Sidebar(props) {
   const [showSidebar, setShowSidebar] = useState(true);
   const sidebarClass = showSidebar ? '' : 'closed';
   const [showMonitoring, setShowMonitoring] = useState(false);
-  const pusherKey = "abc123";
+
+  useEffect(() => {
+    services.monitoringApiService.getSystemPref()
+    .then((res) => {
+      if (res.data.ok === true) {
+        let monitoringLive = res.data.preferences?.filter(
+            pref => pref.Name === "monitoring_live")[0].Preference
+        setShowMonitoring(monitoringLive === "1")
+      }
+    }).catch((err) => {
+      warningAlert(err.message)
+    });
+
+  }, []);
 
   const handleMonitoringChange = () => {
     document.getElementById("monitoring-live").addEventListener("change",
@@ -21,29 +32,32 @@ function Sidebar() {
               html: "Are you sure you want to disable live monitoring?",
               callback: function (result) {
                 if (result) {
-                  updateSystemPref("monitoring_live", "0")
-                  toggleMonitoring(true);
+                  updateSystemPref("monitoring_live", "1").then(() => {
+                    toggleMonitoring(true).catch((err) => {
+                      warningAlert(err.message)
+                    });
+                  })
                 }
               }
             })
           } else {
-            updateSystemPref("monitoring_live", "1")
-            toggleMonitoring(false);
+            updateSystemPref("monitoring_live", "0").then(() => {
+              toggleMonitoring(false).catch((err) => {
+                warningAlert(err.message)
+              });
+            })
           }
         })
   };
 
-  const updateSystemPref = (prefName, prefValue) => {
-  };
+  const updateSystemPref = async (prefName, prefValue) => {
 
-  const toggleMonitoring = (param) => {
-    setShowMonitoring(param)
-
-    let body = {
-      enabled: param,
+    const body = {
+      pref_name: prefName,
+      pref_value: prefValue,
     }
 
-    services.monitoringApiService.toggleMonitoring(body)
+    await services.monitoringApiService.updateSystemPref(body)
     .then((res) => {
       if (res.data.ok === true) {
         successAlert(res.data.message)
@@ -55,55 +69,23 @@ function Sidebar() {
     });
   };
 
-  useEffect(() => {
+  const toggleMonitoring = async (param) => {
+    setShowMonitoring(param)
 
-  }, []);
-
-  useEffect(() => {
-    let pusher = new Pusher(pusherKey, {
-      authEndPoint: "/pusher/auth",
-      wsHost: "localhost",
-      wsPort: 4001,
-      forceTLS: false,
-      enabledTransports: ["ws", "wss"],
-      disabledTransports: []
+    let body = {
+      enabled: param,
+    }
+    await services.monitoringApiService.toggleMonitoring(body)
+    .then((res) => {
+      if (res.data.ok === true) {
+        successAlert(res.data.message)
+      } else {
+        warningAlert(res.data.message)
+      }
+    }).catch((err) => {
+      warningAlert(err.message)
     });
-
-    const publicChannel = pusher.subscribe("public-channel");
-
-    publicChannel.bind("app-starting", function (data) {
-      setShowMonitoring(true);
-      successAlert(data.message);
-    });
-
-    publicChannel.bind("app-stopping", function (data) {
-      warningAlert(data.message);
-      setShowMonitoring(false);
-
-      // Rest of your logic for stopping app
-    });
-
-    publicChannel.bind("schedule-changed-event", function (data) {
-      // Handle schedule changes
-    });
-
-    publicChannel.bind("schedule-item-removed-event", function (data) {
-      // Handle removed schedule items
-    });
-
-    publicChannel.bind("host-service-status-changed", function (data) {
-      // Handle host-service status changes
-    });
-
-    publicChannel.bind("host-service-count-changed", function (data) {
-      // Handle host-service count changes
-    });
-
-    return () => {
-      // Cleanup code for when component unmounts
-      pusher.disconnect();
-    };
-  }, []);
+  };
 
   return (
       <>
@@ -133,7 +115,7 @@ function Sidebar() {
 
                   <li className="sidebar-item">
                     <a className="sidebar-link"
-                       href="/my-app/src/pages/Admin/host/all">
+                       href="/hosts">
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['server'].toSvg()}}/>
                       <span
@@ -236,7 +218,7 @@ function Sidebar() {
                     <div className="card">
 
                       <div className="card-body">
-                        <HomePage/>
+                        {props.children}
                       </div>
                     </div>
                   </div>

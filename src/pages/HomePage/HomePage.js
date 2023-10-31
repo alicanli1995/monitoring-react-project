@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import "../Admin/css/app.css";
 import services from "../../services";
-import {warningAlert} from "../Admin/js/attention";
+import Pusher from "../Admin/js/pusher.min";
+import {successAlert, warningAlert} from "../Admin/js/attention";
 
 function HomePage() {
   const [hosts, setHosts] = useState([]);
@@ -11,12 +12,65 @@ function HomePage() {
     problem: 0,
     pending: 0,
   });
+  const pusherKey = "abc123";
+
+  useEffect(() => {
+    let pusher = new Pusher(pusherKey, {
+      authEndPoint: "/pusher/auth",
+      wsHost: "localhost",
+      wsPort: 4001,
+      forceTLS: false,
+      enabledTransports: ["ws", "wss"],
+      disabledTransports: []
+    });
+
+    const publicChannel = pusher.subscribe("public-channel");
+
+    publicChannel.bind("app-starting", function (data) {
+      successAlert(data.message);
+
+      console.log(data, "data")
+    });
+
+    publicChannel.bind("app-stopping", function (data) {
+      warningAlert(data.message);
+
+      // Rest of your logic for stopping app
+
+      console.log(data, "data")
+    });
+
+    publicChannel.bind("schedule-changed-event", function (data) {
+      // Handle schedule changes
+    });
+
+    publicChannel.bind("schedule-item-removed-event", function (data) {
+      // Handle removed schedule items
+    });
+
+    publicChannel.bind("host-service-status-changed", function (data) {
+      // Handle host-service status changes
+    });
+
+    publicChannel.bind("host-service-count-changed", function (data) {
+      setServicesCount({
+        healthy: data.healthy_count,
+        warning: data.warning_count,
+        problem: data.problem_count,
+        pending: data.pending_count,
+      })
+    });
+
+    return () => {
+      // Cleanup code for when component unmounts
+      pusher.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     services.monitoringApiService.getAllHosts().then((res) => {
       if (res.data.ok === true) {
         setHosts(res.data.hosts)
-        console.log(res.data)
         setServicesCount({
           healthy: res.data.healthy,
           warning: res.data.warning,
@@ -50,7 +104,8 @@ function HomePage() {
                  }}
             >
               <div className="card-body text-success">
-                <span id="healthy_count"> {servicesCount.healthy} </span> Healthy service(s)
+                  <span id="healthy_count"> {servicesCount.healthy} </span> Healthy
+                service(s)
               </div>
               <div
                   className="card-footer d-flex align-items-center justify-content-between"
@@ -91,7 +146,8 @@ function HomePage() {
                     }
                   }>
                 <a className="small text-warning stretched-link"
-                   href="/src/pages/Admin/all-warning">View Details</a>
+                   href="/src/pages/Admin/all-warning">View
+                  Details</a>
                 <div className="small text-warning"><i
                     className="fas fa-angle-right"></i></div>
               </div>
@@ -105,7 +161,8 @@ function HomePage() {
               }
             }>
               <div className="card-body text-danger">
-                <span id="problem_count"> {servicesCount.problem} </span> Problem
+                            <span
+                                id="problem_count"> {servicesCount.problem} </span> Problem
                 service(s)
               </div>
               <div
@@ -118,7 +175,8 @@ function HomePage() {
                     }
                   }>
                 <a className="small text-danger stretched-link"
-                   href="/src/pages/Admin/all-problems">View Details</a>
+                   href="/src/pages/Admin/all-problems">View
+                  Details</a>
                 <div className="small text-danger"><i
                     className="fas fa-angle-right"></i></div>
               </div>
@@ -132,7 +190,9 @@ function HomePage() {
               }
             }>
               <div className="card-body text-dark">
-                    <span id="pending_count"> {servicesCount.pending}  </span> Pending service(s)
+                            <span
+                                id="pending_count"> {servicesCount.pending}  </span> Pending
+                service(s)
               </div>
               <div
                   className="card-footer d-flex align-items-center justify-content-between"
@@ -144,7 +204,8 @@ function HomePage() {
                     }
                   }>
                 <a className="small text-dark stretched-link"
-                   href="/src/pages/Admin/all-pending">View Details</a>
+                   href="/src/pages/Admin/all-pending">View
+                  Details</a>
                 <div className="small text-dark"><i
                     className="fas fa-angle-right"></i></div>
               </div>
@@ -168,22 +229,11 @@ function HomePage() {
               </tr>
               </thead>
               <tbody>
-              {/*<tr>*/}
-              {/*  <td><a href="/src/pages/Admin/host/{{.ID}}">HostName</a></td>*/}
-              {/*  <td>*/}
-              {/*    <span className="badge bg-info">Service</span>*/}
-              {/*  </td>*/}
-              {/*  <td>OS</td>*/}
-              {/*  <td>Location</td>*/}
-              {/*  <td>*/}
-              {/*    <span className="badge bg-success">Active</span>*/}
-              {/*  </td>*/}
-              {/*</tr>*/}
               {hosts && (hosts.length > 0 ? hosts.map((host) => {
                 return (
                     <tr key={'host-' + host.id}>
                       <td><a
-                          href="/src/pages/Admin/host/{{.ID}}">{host.HostName}</a>
+                          href={"/host/" + host.ID}>{host.HostName}</a>
                       </td>
                       <td>
                         <span
