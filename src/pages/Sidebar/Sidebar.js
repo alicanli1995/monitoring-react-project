@@ -1,7 +1,7 @@
 import feather from 'feather-icons';
 import React, {useEffect, useState} from 'react';
 import "../../css/sidebar.css";
-import SwitchButton from "../../components/SwitchButton";
+import SwitchButton from "../../components/buttons/SwitchButton";
 import services from "../../services";
 import {confirm, successAlert, warningAlert} from "../Admin/js/attention";
 

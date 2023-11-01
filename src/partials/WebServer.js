@@ -1,7 +1,7 @@
 import {useContext, useEffect} from 'react';
 import {successAlert, warningAlert} from "../pages/Admin/js/attention";
 import Pusher from "../pages/Admin/js/pusher.min";
-import {DataContext} from "../pages/misc/DataContextProvider";
+import {DataContext} from "../components/misc/DataContextProvider";
 
 const WebServer = () => {
   const pusherKey = "abc123";

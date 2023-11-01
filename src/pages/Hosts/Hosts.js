@@ -9,7 +9,6 @@ function Hosts() {
   useEffect(() => {
     services.monitoringApiService.fetchHosts().then((res) => {
       setHosts(res.data.hosts)
-      console.log(res.data.hosts, "res.data.hosts")
     }).catch((err) => {
       warningAlert(err.message)
     });
@@ -33,7 +32,7 @@ function Hosts() {
 
                 <div className="float-right">
                   <a className="btn btn-outline-secondary"
-                     href="/admin/host/0#host">New Host</a>
+                     href="/host/0">New Host</a>
                 </div>
                 <div className="clearfix"></div>
 

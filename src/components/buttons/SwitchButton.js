@@ -1,10 +1,12 @@
 import {FormControlLabel, styled, Switch} from "@mui/material";
 
-const SwitchButton = (props) => {
+const SwitchButton = (pr) => {
 
   const IOSSwitch = styled((props) => (
-      <Switch focusVisibleClassName=".Mui-focusVisible" checked={props.checked}
-              id="monitoring-live"
+      <Switch focusVisibleClassName=".Mui-focusVisible"
+              checked={props.checked}
+              id={pr.id}
+              onChange={props.handleToggle}
               disableRipple {...props} />
   ))(({theme}) => ({
     width: 30,
@@ -59,23 +61,15 @@ const SwitchButton = (props) => {
   return (
       <>
         <FormControlLabel
-            control={
-              <IOSSwitch sx={{m: 1}}/>
-            }
-            checked={props.checked}
-            onClick={props.handleToggle}
-            label={
-              <b style={{fontSize: '15px',fontFamily: 'sans-serif'}}>
-                {props.label}
-              </b>
-            }
-            style={
-              {
-                maxHeight: '10px',
-                marginTop: '7px',
-                marginRight: '6px',
-              }
-            }
+            control={<IOSSwitch sx={{m: 1}}/>}
+            checked={pr.checked}
+            onClick={pr.handleToggle}
+            label={<b style={{fontSize: '15px', fontFamily: 'sans-serif'}}>
+              {pr.label}
+            </b>}
+            style={{
+              maxHeight: '10px', marginTop: '7px', marginRight: '6px',
+            }}
         />
       </>
   )

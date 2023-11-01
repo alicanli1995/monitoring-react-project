@@ -91,6 +91,20 @@ export default class MonitoringApiServices extends HttpService {
       throw new Error(error.response.data.errorDetail[0].message)
     }
   }
+
+  async updateHost(body, id) {
+    try {
+      return await this.getAdapter().post(
+          `/admin/host/${id}`, body, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+    } catch (error) {
+      console.error(error)
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
 }
 
 
