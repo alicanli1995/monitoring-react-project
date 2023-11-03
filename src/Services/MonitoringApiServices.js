@@ -24,12 +24,11 @@ export default class MonitoringApiServices extends HttpService {
 
   async getAllHosts() {
     try {
-      return await this.getAdapter().get(
-          '/admin/overview', {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
+      return await this.getAdapter().get('/admin/overview', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
     } catch (error) {
       console.error(error)
       throw new Error(error.response.data.errorDetail[0].message)
@@ -52,12 +51,11 @@ export default class MonitoringApiServices extends HttpService {
 
   async getSystemPref() {
     try {
-      return await this.getAdapter().get(
-          '/admin/preferences', {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
+      return await this.getAdapter().get('/admin/preferences', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
     } catch (error) {
       console.error(error)
       throw new Error(error.response.data.errorDetail[0].message)
@@ -66,12 +64,11 @@ export default class MonitoringApiServices extends HttpService {
 
   async fetchHosts() {
     try {
-      return await this.getAdapter().get(
-          '/admin/host/all', {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
+      return await this.getAdapter().get('/admin/host/all', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
     } catch (error) {
       console.error(error)
       throw new Error(error.response.data.errorDetail[0].message)
@@ -80,8 +77,34 @@ export default class MonitoringApiServices extends HttpService {
 
   async fetchHost(hostID) {
     try {
+      return await this.getAdapter().get(`/admin/host/${hostID}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async updateHost(body, id) {
+    try {
+      return await this.getAdapter().post(`/admin/host/${id}`, body, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async checkNow(ID, oldStatus) {
+    try {
       return await this.getAdapter().get(
-          `/admin/host/${hostID}`, {
+          `/admin/perform-check/${ID}/${oldStatus}`, {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -92,10 +115,10 @@ export default class MonitoringApiServices extends HttpService {
     }
   }
 
-  async updateHost(body, id) {
+  async toggleService(body) {
     try {
-      return await this.getAdapter().post(
-          `/admin/host/${id}`, body, {
+      return await this.getAdapter().post('/admin/host/ajax/toggle-service',
+          body, {
             headers: {
               'Content-Type': 'application/json',
             },

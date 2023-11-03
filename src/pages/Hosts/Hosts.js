@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import services from "../../services";
+import services from "../../Services";
 import {warningAlert} from "../Admin/js/attention";
 
 function Hosts() {

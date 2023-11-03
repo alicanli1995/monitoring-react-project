@@ -2,14 +2,37 @@ import {useEffect, useState} from "react";
 import {Button} from "@mui/material";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faInfo} from '@fortawesome/free-solid-svg-icons/faInfo';
+import services from "../../Services";
+import {successAlert} from "../Admin/js/attention";
+import SwitchButton from "../../components/buttons/SwitchButton";
 
 const ManageServiceTab = (props) => {
 
-  const [hostServices, setHostServices] = useState({});
+  const [hostServices, setHostServices] = useState([]);
 
   useEffect(() => {
     setHostServices(props.host?.HostServices);
   }, [props.host.HostServices]);
+
+  function handleChangeActive(index) {
+    let service = hostServices[index];
+    const value = document.getElementById("active-" + service.ID).checked ? 1 : 0;
+    let body = {
+      host_id: service.HostID,
+      service_id: service.ServiceID,
+      active: value,
+    }
+    services.monitoringApiService.toggleService(body).then((res) => {
+      if (res.data.ok === true) {
+        successAlert("Service updated")
+      }
+    })
+    setHostServices(prevState => {
+      let newState = [...prevState];
+      newState[index].Active = value;
+      return newState;
+    })
+  }
 
   return (
       <>
@@ -28,9 +51,10 @@ const ManageServiceTab = (props) => {
                 </thead>
                 <tbody>
                 {hostServices && (hostServices.length > 0 ? hostServices.map(
-                    (hostService) => {
+                    (hostService,index) => {
                       return (
-                          <tr key={hostService.ID}>
+                          <>
+                          <tr key={'manage-server-' + hostService.ID}>
                             <td>
                               <Button variant="contained"
                                       size={"small"}
@@ -41,20 +65,25 @@ const ManageServiceTab = (props) => {
                             </td>
                             <td>
                               <div className="form-check form-switch">
-                                <input className="form-check-input"
-                                       type="checkbox"
-                                       name={hostService.Service.ServiceName}
-                                       data-service={hostService.ServiceID}
-                                       data-host-id={hostService.HostID}
-                                       datatype="toggle-service"
-                                       checked={hostService.Active === 1}
-                                       onChange={(e) => console.log(e)}
-                                       value="1"/>
-                                <label className="form-check-label"
-                                       form="active">Active</label>
+                                {/*<input className="form-check-input"*/}
+                                {/*       type="checkbox"*/}
+                                {/*       id={"active-" + hostService.ID}*/}
+                                {/*       datatype="toggle-service"*/}
+                                {/*       checked={hostService.Active === 1}*/}
+                                {/*       onClick={(e) => handleChangeActive(e,index)}*/}
+                                {/*       />*/}
+                                {/*<label className="form-check-label"*/}
+                                {/*       form="active">Active</label>*/}
+                                <SwitchButton
+                                    checked={hostService.Active === 1}
+                                    handleToggle={() => handleChangeActive(index)}
+                                    id={"active-" + hostService.ID}
+                                    label={"Active"}
+                                />
                               </div>
                             </td>
                           </tr>
+                          </>
                       )
                     }) : <tr>
                   <td colSpan="2">No Services</td>

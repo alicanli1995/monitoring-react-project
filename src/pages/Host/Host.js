@@ -1,10 +1,13 @@
 import {useEffect, useState} from "react";
-import services from "../../services";
+import services from "../../Services";
 import {warningAlert} from "../Admin/js/attention";
 import HostsTab from "../ContentTabs/HostTab";
 import ManageServiceTab from "../ContentTabs/ManageServiceTab";
 import TabHeaders from "../ContentTabs/TabHeaders";
 import HealthyTab from "../ContentTabs/HealthyTab";
+import ProblemTab from "../ContentTabs/ProblemTab";
+import WarningTab from "../ContentTabs/WarningTab";
+import PendingTab from "../ContentTabs/PendingTab";
 
 function Host(props) {
 
@@ -14,7 +17,6 @@ function Host(props) {
     services.monitoringApiService.fetchHost(props.match.params.hostId).then(
         (res) => {
           setHost(res.data.host)
-          console.log(res.data.host)
         }).catch((err) => {
       warningAlert(err.message)
     });
@@ -25,28 +27,35 @@ function Host(props) {
     let tabList = ['services-tab', 'healthy-tab', 'warning-tab', 'problem-tab',
       'pending-tab', 'host-tab'];
 
+    services.monitoringApiService.fetchHost(props.match.params.hostId).then(
+        (res) => {
+          setHost(res.data.host)
+        }).catch((err) => {
+      warningAlert(err.message)
+    });
+
     tabList.forEach((item) => {
       if (item !== e) {
         let tab = document.getElementById(item);
-        let tabClassList = tab.classList;
-        tabClassList.remove('active');
+        let tabClassList = tab?.classList;
+        tabClassList?.remove('active');
 
         let content = document.getElementById(item.replace('tab', 'content'));
         if (content) {
           let contentClassList = content.classList;
-          contentClassList.remove('show');
-          contentClassList.remove('active');
+          contentClassList?.remove('show');
+          contentClassList?.remove('active');
         }
       } else {
         let tab = document.getElementById(item);
-        let tabClassList = tab.classList;
-        tabClassList.add('active');
+        let tabClassList = tab?.classList;
+        tabClassList?.add('active');
 
         let content = document.getElementById(item.replace('tab', 'content'));
         if (content) {
-          let contentClassList = content.classList;
-          contentClassList.add('show');
-          contentClassList.add('active');
+          let contentClassList = content?.classList;
+          contentClassList?.add('show');
+          contentClassList?.add('active');
         }
       }
     });
@@ -84,6 +93,10 @@ function Host(props) {
                 <HostsTab host={host}/>
                 {host && <ManageServiceTab host={host}/>}
                 {host && <HealthyTab host={host}/>}
+                {host && <ProblemTab host={host}/>}
+                {host && <WarningTab host={host}/>}
+                {host && <PendingTab host={host}/>}
+
               </div>
             </form>
           </div>

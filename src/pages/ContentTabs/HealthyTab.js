@@ -1,12 +1,38 @@
 import {useEffect, useState} from "react";
+import services from "../../Services";
+import {successAlert, warningAlert} from "../Admin/js/attention";
+import {dateFormatter} from "../../Utils/utils";
 
 const HealthyTab = (props) => {
 
   const [hostServices, setHostServices] = useState([]);
 
   useEffect(() => {
-    setHostServices(props.host.HostServices);
+    let healthyServices = props.host.HostServices?.filter(
+        service => service.Status === "healthy")
+    setHostServices(healthyServices);
   }, [props.host.HostServices, props.host]);
+
+  const handleCheckNow = (index) => {
+    services.monitoringApiService.checkNow(hostServices[index].ID,
+        "healthy").then((res) => {
+      if (res.data.ok === true) {
+        successAlert("Service status is: " + res.data.new_status)
+        if (res.data.old_status !== res.data.new_status) {
+          services.monitoringApiService.fetchHost(props.host.ID).then((res) => {
+            let services = res.data.host.HostServices.filter
+            (service => service.Status === "healthy");
+            setHostServices(services);
+          }).catch((err) => {
+            warningAlert(err.message)
+          });
+        }
+      }
+    }).catch((err) => {
+      warningAlert(err.message)
+    });
+  }
+
 
   return (
       <>
@@ -26,7 +52,7 @@ const HealthyTab = (props) => {
                 </thead>
                 <tbody>
                 {hostServices && (hostServices.length > 0 ? hostServices.map(
-                    (hostService) => {
+                    (hostService,index) => {
                       return (
                           <tr key={hostService.ID}>
                             <td>
@@ -34,10 +60,13 @@ const HealthyTab = (props) => {
                               {" " + hostService.Service.ServiceName + " "}
                               <span
                                   className="badge bg-info pointer align-middle"
-                                  >Check Now</span>
+                                  onClick={() => handleCheckNow(index)}
+                                  style={{cursor: "pointer"}}
+                              >Check Now</span>
                             </td>
                             <td>
-                              Pending...
+                              {hostService.LastCheck ? dateFormatter(
+                                  hostService.LastCheck) : "Pending..."}
                             </td>
                             <td></td>
                           </tr>

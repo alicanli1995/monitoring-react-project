@@ -2,7 +2,7 @@ import feather from 'feather-icons';
 import React, {useEffect, useState} from 'react';
 import "../../css/sidebar.css";
 import SwitchButton from "../../components/buttons/SwitchButton";
-import services from "../../services";
+import services from "../../Services";
 import {confirm, successAlert, warningAlert} from "../Admin/js/attention";
 
 function Sidebar(props) {
@@ -201,6 +201,7 @@ function Sidebar(props) {
                 >
                   <SwitchButton
                       label="Monitoring"
+                      id="monitoring-live"
                       checked={showMonitoring}
                       handleToggle={() => {
                         handleMonitoringChange()

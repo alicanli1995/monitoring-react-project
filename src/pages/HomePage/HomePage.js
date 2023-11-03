@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import "../Admin/css/app.css";
-import services from "../../services";
+import services from "../../Services";
 import {warningAlert} from "../Admin/js/attention";
 import {DataContext} from "../../components/misc/DataContextProvider";
 

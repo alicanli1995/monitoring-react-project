@@ -9,7 +9,7 @@ import {
 import Hosts from "./pages/Hosts/Hosts";
 import HomePage from "./pages/HomePage/HomePage";
 import Host from "./pages/Host/Host";
-import WebServer from "./partials/WebServer";
+import WebServer from "./Partials/WebServer";
 import DataContextProvider from "./components/misc/DataContextProvider";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

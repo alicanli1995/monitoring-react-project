@@ -11,7 +11,7 @@ import MenuList from '@mui/material/MenuList';
 import {TextField} from "@mui/material";
 import SwitchButton from "../../components/buttons/SwitchButton";
 import {useHistory} from "react-router-dom";
-import services from "../../services";
+import services from "../../Services";
 import {successAlert, warningAlert} from "../Admin/js/attention";
 import {checkObjectEquality} from "../../Utils/utils";
 
