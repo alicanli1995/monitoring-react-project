@@ -128,6 +128,83 @@ export default class MonitoringApiServices extends HttpService {
       throw new Error(error.response.data.errorDetail[0].message)
     }
   }
+
+  async getAllHealthyServices() {
+    try {
+      return await this.getAdapter().get('/admin/all-healthy', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async getAllProblemServices() {
+    try {
+      return this.getAdapter().get('/admin/all-problem', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async getAllWarningServices() {
+    try {
+      return await this.getAdapter().get('/admin/all-warning', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async getAllPendingServices() {
+    try {
+      return await this.getAdapter().get('/admin/all-pending', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async fetchEvents() {
+    try {
+      return await this.getAdapter().get('/admin/events', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error(error)
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async getSchedule() {
+    try {
+      return await this.getAdapter().get('/admin/schedule', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
 }
 
 

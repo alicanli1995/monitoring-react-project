@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
-import {dateFormatter} from "../../Utils/utils";
+import {dateFormatter} from "../../utils/utils";
+import services from "../../services";
+import {successAlert, warningAlert} from "../Admin/js/attention";
 
 const WarningTab = (props) => {
 
@@ -10,6 +12,24 @@ const WarningTab = (props) => {
         service => service.Status === "warning")
     setHostServices(problemServices);
   }, [props.host.HostServices, props.host]);
+
+  const handleCheckNow = (index) => {
+    services.monitoringApiService.checkNow(hostServices[index].ID,
+        "warning").then((res) => {
+      if (res.data.ok === true) {
+        successAlert("Service status is: " + res.data.new_status)
+        services.monitoringApiService.fetchHost(props.host.ID).then((res) => {
+          let services = res.data.host.HostServices.filter
+          (service => service.Status === "warning");
+          setHostServices(services);
+        }).catch((err) => {
+          warningAlert(err.message)
+        });
+      }
+    }).catch((err) => {
+      warningAlert(err.message)
+    });
+  }
 
   return (
       <>
@@ -29,14 +49,17 @@ const WarningTab = (props) => {
                 </thead>
                 <tbody>
                 {hostServices && (hostServices.length > 0 ? hostServices.map(
-                    (hostService) => {
+                    (hostService, index) => {
                       return (
-                          <tr key={hostService.ID}>
+                          <tr id={'host-service-' + hostService.Service.ID}
+                              key={'host-service-' + hostService.Service.ID}>
                             <td>
                               <span className={hostService.Service.Icon}></span>
                               {" " + hostService.Service.ServiceName + " "}
                               <span
                                   className="badge bg-info pointer align-middle"
+                                  onClick={() => handleCheckNow(index)}
+                                  style={{cursor: "pointer"}}
                               >Check Now</span>
                             </td>
                             <td>

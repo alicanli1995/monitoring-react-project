@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import services from "../../Services";
+import services from "../../services";
 import {warningAlert} from "../Admin/js/attention";
 import HostsTab from "../ContentTabs/HostTab";
 import ManageServiceTab from "../ContentTabs/ManageServiceTab";
@@ -67,7 +67,7 @@ function Host(props) {
         <div className="row">
           <div className="col">
             <ol className="breadcrumb mt-1">
-              <li className="breadcrumb-item"><a href="/overview">Overview</a>
+              <li className="breadcrumb-item"><a href="/">Overview</a>
               </li>
               <li className="breadcrumb-item"><a href="/hosts">Hosts</a></li>
               <li className="breadcrumb-item active">Host</li>

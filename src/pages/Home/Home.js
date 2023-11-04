@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
 import "../Admin/css/app.css";
-import services from "../../Services";
+import services from "../../services";
 import {warningAlert} from "../Admin/js/attention";
 import {DataContext} from "../../components/misc/DataContextProvider";
 
-const HomePage = () => {
+const Home = () => {
   const [hosts, setHosts] = useState([]);
   const {servicesCount} = useContext(DataContext)
 
@@ -47,7 +47,7 @@ const HomePage = () => {
                     borderTop: "1px solid rgba(0, 0, 0, 0.125)"
                   }}>
                 <a className="small text-success stretched-link"
-                   href="/src/pages/Admin/all-healthy">
+                   href="/all-healthy">
                   View Details</a>
                 <div className="small text-success"><i
                     className="fas fa-angle-right"></i></div>
@@ -71,7 +71,7 @@ const HomePage = () => {
                     borderTop: "1px solid rgba(0, 0, 0, 0.125)"
                   }}>
                 <a className="small text-warning stretched-link"
-                   href="/src/pages/Admin/all-warning">
+                   href="/all-warning">
                   View Details</a>
                 <div className="small text-warning">
                   <i className="fas fa-angle-right"></i>
@@ -96,7 +96,7 @@ const HomePage = () => {
                     borderTop: "1px solid rgba(0, 0, 0, 0.125)"
                   }}>
                 <a className="small text-danger stretched-link"
-                   href="/src/pages/Admin/all-problems">
+                   href="/all-problem">
                   View Details</a>
                 <div className="small text-danger"><i
                     className="fas fa-angle-right"></i></div>
@@ -120,7 +120,7 @@ const HomePage = () => {
                     borderTop: "1px solid rgba(0, 0, 0, 0.125)"
                   }}>
                 <a className="small text-dark stretched-link"
-                   href="/src/pages/Admin/all-pending">
+                   href="/all-pending">
                   View Details</a>
                 <div className="small text-dark"><i
                     className="fas fa-angle-right"></i></div>
@@ -179,4 +179,4 @@ const HomePage = () => {
   );
 }
 
-export default HomePage;
+export default Home;

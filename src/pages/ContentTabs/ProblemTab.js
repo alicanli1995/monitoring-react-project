@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {dateFormatter} from "../../Utils/utils";
-import services from "../../Services";
+import {dateFormatter} from "../../utils/utils";
+import services from "../../services";
 import {successAlert, warningAlert} from "../Admin/js/attention";
 
 const ProblemTab = (props) => {
@@ -18,15 +18,13 @@ const ProblemTab = (props) => {
         "problem").then((res) => {
       if (res.data.ok === true) {
         successAlert("Service status is: " + res.data.new_status)
-        if (res.data.old_status !== res.data.new_status) {
-          services.monitoringApiService.fetchHost(props.host.ID).then((res) => {
-            let services = res.data.host.HostServices.filter
-            (service => service.Status === "problem");
-            setHostServices(services);
-          }).catch((err) => {
-            warningAlert(err.message)
-          });
-        }
+        services.monitoringApiService.fetchHost(props.host.ID).then((res) => {
+          let services = res.data.host.HostServices.filter
+          (service => service.Status === "problem");
+          setHostServices(services);
+        }).catch((err) => {
+          warningAlert(err.message)
+        });
       }
     }).catch((err) => {
       warningAlert(err.message)
@@ -52,22 +50,24 @@ const ProblemTab = (props) => {
                 <tbody>
                 {hostServices && (hostServices.length > 0 ? hostServices
                 .map((hostService, index) => {
-                  return (<tr key={hostService.ID}>
-                    <td>
-                      <span className={hostService.Service.Icon}></span>
-                      {" " + hostService.Service.ServiceName + " "}
-                      <span
-                          className="badge bg-info pointer align-middle"
-                          onClick={() => handleCheckNow(index)}
-                          style={{cursor: "pointer"}}
-                      >Check Now</span>
-                    </td>
-                    <td>
-                      {hostService.LastCheck ? dateFormatter(
-                          hostService.LastCheck) : "Pending..."}
-                    </td>
-                    <td></td>
-                  </tr>)
+                  return (
+                      <tr id={'host-service-' + hostService.Service.ID}
+                          key={'host-service-' + hostService.Service.ID}>
+                        <td>
+                          <span className={hostService.Service.Icon}></span>
+                          {" " + hostService.Service.ServiceName + " "}
+                          <span
+                              className="badge bg-info pointer align-middle"
+                              onClick={() => handleCheckNow(index)}
+                              style={{cursor: "pointer"}}
+                          >Check Now</span>
+                        </td>
+                        <td>
+                          {hostService.LastCheck ? dateFormatter(
+                              hostService.LastCheck) : "Pending..."}
+                        </td>
+                        <td></td>
+                      </tr>)
                 }) : <tr>
                   <td colSpan="3">No Services</td>
                 </tr>)}

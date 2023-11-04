@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import services from "../../Services";
+import services from "../../services";
 import {successAlert, warningAlert} from "../Admin/js/attention";
-import {dateFormatter} from "../../Utils/utils";
+import {dateFormatter} from "../../utils/utils";
 
 const HealthyTab = (props) => {
 
@@ -18,21 +18,18 @@ const HealthyTab = (props) => {
         "healthy").then((res) => {
       if (res.data.ok === true) {
         successAlert("Service status is: " + res.data.new_status)
-        if (res.data.old_status !== res.data.new_status) {
-          services.monitoringApiService.fetchHost(props.host.ID).then((res) => {
-            let services = res.data.host.HostServices.filter
-            (service => service.Status === "healthy");
-            setHostServices(services);
-          }).catch((err) => {
-            warningAlert(err.message)
-          });
-        }
+        services.monitoringApiService.fetchHost(props.host.ID).then((res) => {
+          let services = res.data.host.HostServices.filter
+          (service => service.Status === "healthy");
+          setHostServices(services);
+        }).catch((err) => {
+          warningAlert(err.message)
+        });
       }
     }).catch((err) => {
       warningAlert(err.message)
     });
   }
-
 
   return (
       <>
@@ -52,9 +49,10 @@ const HealthyTab = (props) => {
                 </thead>
                 <tbody>
                 {hostServices && (hostServices.length > 0 ? hostServices.map(
-                    (hostService,index) => {
+                    (hostService, index) => {
                       return (
-                          <tr key={hostService.ID}>
+                          <tr id={'host-service-' + hostService.Service.ID}
+                              key={'host-service-' + hostService.Service.ID}>
                             <td>
                               <span className={hostService.Service.Icon}></span>
                               {" " + hostService.Service.ServiceName + " "}

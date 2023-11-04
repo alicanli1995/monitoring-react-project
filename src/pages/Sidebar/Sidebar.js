@@ -2,7 +2,7 @@ import feather from 'feather-icons';
 import React, {useEffect, useState} from 'react';
 import "../../css/sidebar.css";
 import SwitchButton from "../../components/buttons/SwitchButton";
-import services from "../../Services";
+import services from "../../services";
 import {confirm, successAlert, warningAlert} from "../Admin/js/attention";
 
 function Sidebar(props) {
@@ -104,7 +104,7 @@ function Sidebar(props) {
                 <ul className="sidebar-nav">
                   <li className="sidebar-item">
                     <a className="sidebar-link"
-                       href="/my-app/src/pages/Admin/overview">
+                       href="/">
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['compass'].toSvg()}}/>
                       <span
@@ -125,7 +125,7 @@ function Sidebar(props) {
                   </li>
 
                   <li className="sidebar-item">
-                    <a className="sidebar-link" href="/src/pages/Admin/events">
+                    <a className="sidebar-link" href="/events">
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['check-circle'].toSvg()}}/>
                       <span
@@ -136,7 +136,7 @@ function Sidebar(props) {
 
                   <li className="sidebar-item">
                     <a className="sidebar-link"
-                       href="/src/pages/Admin/schedule">
+                       href="/schedule">
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['calendar'].toSvg()}}/>
                       <span

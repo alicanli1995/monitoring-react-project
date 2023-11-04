@@ -1,5 +1,5 @@
 import {createContext, useEffect, useState} from "react";
-import services from "../../Services";
+import services from "../../services";
 import {warningAlert} from "../../pages/Admin/js/attention";
 
 export const DataContext = createContext();

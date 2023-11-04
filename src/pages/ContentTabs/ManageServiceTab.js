@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {Button} from "@mui/material";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faInfo} from '@fortawesome/free-solid-svg-icons/faInfo';
-import services from "../../Services";
+import services from "../../services";
 import {successAlert} from "../Admin/js/attention";
 import SwitchButton from "../../components/buttons/SwitchButton";
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import services from "../../Services";
+import services from "../../services";
 import {warningAlert} from "../Admin/js/attention";
 
 function Hosts() {
@@ -20,7 +20,7 @@ function Hosts() {
           <div className="col">
             <ol className="breadcrumb mt-1">
               <li className="breadcrumb-item"><a
-                  href="/admin/overview">Overview</a></li>
+                  href="/">Overview</a></li>
               <li className="breadcrumb-item active">Hosts</li>
             </ol>
             <h4 className="mt-4">Hosts</h4>
