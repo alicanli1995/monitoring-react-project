@@ -205,6 +205,55 @@ export default class MonitoringApiServices extends HttpService {
       throw new Error(error.response.data.errorDetail[0].message)
     }
   }
+
+  async fetchUsers() {
+    try {
+      return await this.getAdapter().get('/admin/users', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+
+  }
+
+  async fetchUser(userID) {
+    try {
+      return await this.getAdapter().get(`/admin/user/${userID}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async updateUser(user, ID) {
+    try {
+      return this.getAdapter().post(`/admin/user/${ID}`, user, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async deleteUser(ID) {
+    try {
+      return await this.getAdapter().delete(`/admin/user/delete/${ID}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
 }
 
 

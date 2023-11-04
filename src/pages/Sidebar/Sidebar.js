@@ -157,7 +157,7 @@ function Sidebar(props) {
                   </li>
 
                   <li className="sidebar-item">
-                    <a className="sidebar-link" href="/src/pages/Admin/users">
+                    <a className="sidebar-link" href="/users">
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['users'].toSvg()}}/>
                       <span

@@ -23,6 +23,17 @@ const WebServer = () => {
 
     publicChannel.bind("app-starting", function (data) {
       successAlert(data.message);
+
+      let scheduledTableExist = !!document.getElementById("schedule-table");
+      if (scheduledTableExist) {
+        let tableRef = document.getElementById("schedule-table");
+        tableRef.tBodies[0].innerHTML = "";
+
+        let newRow = tableRef.tBodies[0].insertRow(-1);
+        let newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", "5");
+        newCell.innerHTML = "No scheduled checks";
+      }
     });
 
     publicChannel.bind("app-stopping", function (data) {
@@ -115,9 +126,7 @@ const WebServer = () => {
       })
 
       deleteHostServiceRow(data.host_service_id);
-
       updateHostServiceTable(data);
-
     });
 
     function updateHostServiceTable(data) {
@@ -129,7 +138,7 @@ const WebServer = () => {
         let tableContent = tableRef.innerText;
         if (tableContent.includes("No Services") || tableContent === ""
             || tableContent === undefined || tableContent === null) {
-            tableRef.deleteRow(1);
+          tableRef.deleteRow(1);
         }
 
         let newRow = tableRef.tBodies[0].insertRow(-1);

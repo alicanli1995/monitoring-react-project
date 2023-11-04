@@ -8,34 +8,24 @@ const Events = () => {
 
   const [events, setEvents] = useState([])
 
-  const columns = [
-    {id: 'EventType', label: 'Event Type', minWidth: 170, align: 'center'},
-    {id: 'HostName', label: 'Host', minWidth: 100, align: 'center'},
-    {
-      id: 'ServiceName',
-      label: 'Service',
-      minWidth: 170,
-      align: 'center',
+  const columns = [{field: 'id', headerName: 'ID', width: 170},
+    {field: 'EventType', headerName: 'Event Type', width: 270},
+    {field: 'HostName', headerName: 'Host', width: 200}, {
+      field: 'ServiceName', headerName: 'Service', width: 170,
+    }, {
+      field: 'CreatedAt', headerName: 'Date/Time', width: 170,
+    }, {
+      field: 'Message', headerName: 'Message', width: 470,
     },
-    {
-      id: 'CreatedAt',
-      label: 'Date/Time',
-      minWidth: 170,
-      align: 'center',
-    },
-    {
-      id: 'Message',
-      label: 'Message',
-      minWidth: 170,
-      align: 'center',
-    }
   ];
 
   useEffect(() => {
     services.monitoringApiService.fetchEvents().then((response) => {
       response.data.map((event) => {
         event.CreatedAt = dateFormatter(event.CreatedAt)
+        event.id = event.ID
       })
+      console.log(response.data)
       setEvents(response.data)
     }).catch((error) => {
       warningAlert(error.response.data.message)

@@ -17,6 +17,8 @@ import Warning from "./pages/AllServices/Warning";
 import Pending from "./pages/AllServices/Pending";
 import Events from "./pages/Events/events";
 import Schedule from "./pages/Schedule/Schedule";
+import Users from "./pages/Users/users";
+import User from "./pages/Users/user";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -59,6 +61,14 @@ root.render(
 
             <Route path="/schedule" render={(props) => {
               return <Schedule {...props}/>
+            }}/>
+
+            <Route path="/users" render={(props) => {
+              return <Users {...props}/>
+            }}/>
+
+            <Route path="/user/:id" render={(props) => {
+              return <User {...props}/>
             }}/>
           </Switch>
         </Sidebar>
