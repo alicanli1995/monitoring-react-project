@@ -21,7 +21,6 @@ function Sidebar(props) {
     }).catch((err) => {
       warningAlert(err.message)
     });
-
   }, []);
 
   const handleMonitoringChange = () => {
@@ -177,6 +176,15 @@ function Sidebar(props) {
                          dangerouslySetInnerHTML={{__html: feather.icons['log-out'].toSvg()}}/>
                       <span
                           style={{marginLeft: '-0.7rem'}}
+                          onClick={() => {
+                            localStorage.removeItem("access_token");
+                            localStorage.removeItem("refresh_token");
+                            localStorage.removeItem("access_token_expires_at");
+                            localStorage.removeItem("refresh_token_expires_at");
+                            localStorage.removeItem("session_id");
+                            localStorage.removeItem("user_email");
+                            window.location.href = "/login";
+                          }}
                           className="align-middle">Logout</span>
                     </a>
                   </li>

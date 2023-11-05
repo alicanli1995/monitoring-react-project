@@ -1,0 +1,62 @@
+html, body {
+  height: 100%;
+}
+
+.login-form {
+  width: 100%;
+  margin: 30px auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  max-width: 500px;
+}
+
+.login-form form {
+  margin-bottom: 15px;
+  background: #f7f7f7;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+  border-radius: 0.5em;
+}
+
+.login-form h2 {
+  margin: 0 0 15px;
+}
+
+.form-control, .login-btn {
+  min-height: 38px;
+}
+
+.login-btn {
+  font-size: 15px;
+  font-weight: bold;
+  border-color: rgb(8, 201, 185);
+  border-radius: 1em;
+  max-width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.remember {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.sign-in-title {
+  font-weight: 600;
+}
+
+.notie-container {
+  z-index: 100250;
+  opacity: 0.85;
+  box-shadow: none;
+  height: 50px;
+}
+
+.notie-textbox-inner {
+  line-height: 10pt;
+  font-size: 14pt;
+}

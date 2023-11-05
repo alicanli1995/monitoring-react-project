@@ -6,12 +6,18 @@ import {DataContext} from "../../components/misc/DataContextProvider";
 
 const Home = () => {
   const [hosts, setHosts] = useState([]);
-  const {servicesCount} = useContext(DataContext)
+  const {servicesCount,setServicesCount} = useContext(DataContext)
 
   useEffect(() => {
     services.monitoringApiService.getAllHosts().then((res) => {
       if (res.data.ok === true) {
         setHosts(res.data.hosts)
+        setServicesCount({
+          healthy: res.data.healthy,
+          warning: res.data.warning,
+          problem: res.data.problem,
+          pending: res.data.pending,
+        })
       }
     }).catch((err) => {
       warningAlert(err.message)

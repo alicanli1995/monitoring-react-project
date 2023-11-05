@@ -59,7 +59,6 @@ const Users = () => {
 
   useEffect(() => {
     services.monitoringApiService.fetchUsers().then((res) => {
-      console.log(res.data)
       res.data.map((user) => {
         user.id = user.ID
         user.User = `${user.FirstName} ${user.LastName}`

@@ -51,8 +51,8 @@ const WarningTab = (props) => {
                 {hostServices && (hostServices.length > 0 ? hostServices.map(
                     (hostService, index) => {
                       return (
-                          <tr id={'host-service-' + hostService.Service.ID}
-                              key={'host-service-' + hostService.Service.ID}>
+                          <tr id={'host-service-warning-' + hostService.Service.ID}
+                              key={'host-service-warning-' + hostService.Service.ID}>
                             <td>
                               <span className={hostService.Service.Icon}></span>
                               {" " + hostService.Service.ServiceName + " "}

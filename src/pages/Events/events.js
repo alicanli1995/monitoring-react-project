@@ -25,7 +25,6 @@ const Events = () => {
         event.CreatedAt = dateFormatter(event.CreatedAt)
         event.id = event.ID
       })
-      console.log(response.data)
       setEvents(response.data)
     }).catch((error) => {
       warningAlert(error.response.data.message)

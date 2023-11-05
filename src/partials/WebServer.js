@@ -125,7 +125,7 @@ const WebServer = () => {
         msg: data.message, icon: 'info', timer: 30000, showCloseButton: true,
       })
 
-      deleteHostServiceRow(data.host_service_id);
+      deleteHostServiceRow(data.host_service_id, data.status, data.old_status);
       updateHostServiceTable(data);
     });
 
@@ -142,7 +142,7 @@ const WebServer = () => {
         }
 
         let newRow = tableRef.tBodies[0].insertRow(-1);
-        newRow.setAttribute("id", "host-service-" + data.host_service_id);
+        newRow.setAttribute("id", "host-service-" + data.status + '-' + data.host_service_id);
         let newCell = newRow.insertCell(0);
         newCell.innerHTML = `
             <span class="${data.icon}"></span>
@@ -167,23 +167,27 @@ const WebServer = () => {
       }
     }
 
-    function deleteHostServiceRow(hostServiceID) {
-      let exists = !!document.getElementById("host-service-" + hostServiceID);
+    function deleteHostServiceRow(hostServiceID, newStatus, oldStatus) {
+      let exists = !!document.getElementById(
+          "host-service-" + oldStatus + '-' + hostServiceID);
       if (exists) {
-        let row = document.getElementById("host-service-" + hostServiceID);
-        row.parentNode.removeChild(row);
-        let tables = ["healthy", "pending", "warning", "problem"];
-        for (let i = 0; i < tables.length; i++) {
-          let currentTableExists = !!document.getElementById(
-              tables[i] + "-table");
-          if (currentTableExists) {
-            let currentTable = document.getElementById(tables[i] + "-table");
-            if (currentTable.rows.length === 1) {
-              let newRow = currentTable.tBodies[0].insertRow(-1);
-              let newCell = newRow.insertCell(0);
-              newCell.setAttribute("colspan", "3");
-              newCell.innerHTML = "No Services";
-            }
+
+        let parentNode = document.getElementById(
+            "host-service-" + oldStatus + '-' + hostServiceID).parentNode;
+        let item = parentNode.parentNode;
+
+        let row = document.getElementById(
+            "host-service-" + oldStatus + '-' + hostServiceID);
+
+        row.parentNode?.removeChild(row)
+
+        if (item.id === oldStatus + "-table") {
+          let currentTable = document.getElementById(oldStatus + "-table");
+          if (currentTable.rows.length === 1) {
+            let newRow = currentTable.tBodies[0].insertRow(-1);
+            let newCell = newRow.insertCell(0);
+            newCell.setAttribute("colspan", "3");
+            newCell.innerHTML = "No Services";
           }
         }
       }

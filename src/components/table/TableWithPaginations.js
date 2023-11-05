@@ -16,10 +16,6 @@ export default function StickyHeadTable(dataSet) {
       <div style={{height: 400, width: "100%"}}>
         <DataGrid
             columnHeaderHeight={50}
-            onCellClick={(params, event) => {
-              console.log(params)
-              console.log(event)
-            }}
             rows={rows}
             columns={dataSet.columns}
             initialState={{

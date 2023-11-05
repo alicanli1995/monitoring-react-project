@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {successAlert, warningAlert} from "../Admin/js/attention";
+import {confirm, successAlert, warningAlert} from "../Admin/js/attention";
 import services from "../../services";
 import {FormControl, InputLabel, Select, TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,16 +10,19 @@ const Users = (props) => {
   const [user, setUser] = useState({});
   const [userActive, setUserActive] = useState('');
   const history = useHistory();
+  const [sameUser, setSameUser] = useState(false);
 
   useEffect(() => {
     services.monitoringApiService.fetchUser(props.match.params.id).then(
         (res) => {
-          console.log(res.data)
           setUser(res.data)
           setUserActive(res.data.UserActive)
         }).catch((err) => {
       warningAlert(err.message)
     });
+
+    localStorage.getItem("user_email") === user.Email ? setSameUser(true)
+        : setSameUser(false)
   }, []);
 
   function handleChange(e) {
@@ -51,17 +54,26 @@ const Users = (props) => {
   }
 
   const handleDeleteUser = (ID) => {
-    // TODO : First of all show a confirmation box
-    services.monitoringApiService.deleteUser(ID).then((res) => {
-      if (res.data.ok === true) {
-        successAlert(res.data.message)
-        history.push("/users")
-      } else {
-        warningAlert(res.data.message)
-      }
-    }).catch((err) => {
-      warningAlert(err.message)
-    })
+    document.getElementById("delete-user").addEventListener("click",
+        function () {
+          confirm({
+            html: "Are you sure you want to delete this user?",
+            callback: function (result) {
+              if (result) {
+                services.monitoringApiService.deleteUser(ID).then((res) => {
+                  if (res.data.ok === true) {
+                    successAlert(res.data.message)
+                    history.push("/users")
+                  } else {
+                    warningAlert(res.data.message)
+                  }
+                }).catch((err) => {
+                  warningAlert(err.message)
+                })
+              }
+            }
+          })
+        })
   }
 
   return (
@@ -164,27 +176,29 @@ const Users = (props) => {
               </div>
             </div>
 
-            {/*// TODO : Check this user is login user then this section is now showing*/}
-            <div className="mt-4">
-              <div className="input-group">
+            {!sameUser &&
+                <div className="mt-4">
+                  <div className="input-group">
                                 <span className="input-group-text"><i
                                     className="fas fa-check fa-fw"></i></span>
-                <FormControl style={{width: '97%'}} size={"small"}>
+                    <FormControl style={{width: '97%'}} size={"small"}>
 
-                  <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                  <Select
-                      id="user-active"
-                      name="UserActive"
-                      value={userActive}
-                      label="Status"
-                      onChange={handleChange}
-                  >
-                    <MenuItem value={1}>Active</MenuItem>
-                    <MenuItem value={0}>Inactive</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-            </div>
+                      <InputLabel
+                          id="demo-simple-select-label">Status</InputLabel>
+                      <Select
+                          id="user-active"
+                          name="UserActive"
+                          value={userActive}
+                          label="Status"
+                          onChange={handleChange}
+                      >
+                        <MenuItem value={1}>Active</MenuItem>
+                        <MenuItem value={0}>Inactive</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </div>
+                </div>
+            }
 
             <hr/>
 
@@ -199,14 +213,14 @@ const Users = (props) => {
               <a className="btn btn-info" href="/users">Cancel</a>
             </div>
 
-            {/*// TODO : Check this user is login user*/}
-            {
-              (user?.ID && user.ID > 0) ? <div className="float-right">
-                <a className="btn btn-danger"
-                   onClick={
-                     () => handleDeleteUser(user.ID)
-                   }>Delete</a>
-              </div> : null
+            {!sameUser && (user?.ID && user.ID > 0) ? <div
+                className="float-right">
+              <a className="btn btn-danger"
+                 id="delete-user"
+                 onClick={
+                   () => handleDeleteUser(user.ID)
+                 }>Delete</a>
+            </div> : null
             }
           </div>
         </div>
