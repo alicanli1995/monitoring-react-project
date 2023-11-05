@@ -1,7 +1,4 @@
-
-
-const TabHeaders = ({ host, handleTabChanges}) => {
-
+const TabHeaders = ({host, handleTabChanges}) => {
 
   return (
       <>

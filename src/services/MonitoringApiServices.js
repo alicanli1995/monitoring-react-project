@@ -1,11 +1,11 @@
 import axios from "axios";
-import {errorAlert} from "../pages/Admin/js/attention";
+import {errorAlert} from "../partials/pusher-js/attention";
 
 export default class MonitoringApiServices {
 
   async toggleMonitoring(body) {
     try {
-      return await instance.post('/admin/preferences/ajax/toggle-monitoring',
+      return await instance.post('/admin/preferences/toggle-monitoring',
           body, {
             headers: {
               'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export default class MonitoringApiServices {
 
   async updateSystemPref(body) {
     try {
-      return await instance.post('/admin/preferences/ajax/set-system-pref',
+      return await instance.post('/admin/preferences/set-system-pref',
           body, {
             headers: {
               'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ export default class MonitoringApiServices {
 
   async toggleService(body) {
     try {
-      return await instance.post('/admin/host/ajax/toggle-service', body, {
+      return await instance.post('/admin/host/toggle-service', body, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -241,6 +241,19 @@ export default class MonitoringApiServices {
           'Content-Type': 'application/json',
         },
       })
+    } catch (error) {
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async updateSystemSettings(objectForUpdate) {
+    try {
+      return await instance.post('/admin/settings',
+          objectForUpdate, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
     } catch (error) {
       throw new Error(error.response.data.errorDetail[0].message)
     }

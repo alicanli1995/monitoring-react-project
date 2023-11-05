@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {dateFormatter} from "../../utils/utils";
-import {successAlert, warningAlert} from "../Admin/js/attention";
+import {successAlert, warningAlert} from "../../partials/pusher-js/attention";
 import services from "../../services";
 
 const PendingTab = (props) => {
@@ -51,8 +51,12 @@ const PendingTab = (props) => {
                 {hostServices && (hostServices.length > 0 ? hostServices.map(
                     (hostService, index) => {
                       return (
-                          <tr id={'host-service-pending-' + hostService.Service.ID}
-                              key={'host-service-pending-' + hostService.Service.ID}>
+                          <>
+                          {hostService.Active === 1 &&
+                          <tr id={'host-service-pending-'
+                              + hostService.Service.ID}
+                              key={'host-service-pending-'
+                                  + hostService.Service.ID}>
                             <td>
                               <span className={hostService.Service.Icon}></span>
                               {" " + hostService.Service.ServiceName + " "}
@@ -69,6 +73,8 @@ const PendingTab = (props) => {
                             </td>
                             <td></td>
                           </tr>
+                          }
+                          </>
                       )
                     }) : <tr>
                   <td colSpan="3">No Services</td>

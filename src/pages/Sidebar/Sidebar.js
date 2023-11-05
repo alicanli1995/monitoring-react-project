@@ -3,7 +3,11 @@ import React, {useEffect, useState} from 'react';
 import "../../css/sidebar.css";
 import SwitchButton from "../../components/buttons/SwitchButton";
 import services from "../../services";
-import {confirm, successAlert, warningAlert} from "../Admin/js/attention";
+import {
+  confirm,
+  successAlert,
+  warningAlert
+} from "../../partials/pusher-js/attention";
 
 function Sidebar(props) {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -146,7 +150,7 @@ function Sidebar(props) {
 
                   <li className="sidebar-item">
                     <a className="sidebar-link"
-                       href="/src/pages/Admin/settings">
+                       href="/settings">
                       <i className="align-middle"
                          dangerouslySetInnerHTML={{__html: feather.icons['settings'].toSvg()}}/>
                       <span
@@ -169,27 +173,27 @@ function Sidebar(props) {
                     <hr/>
                   </li>
 
-                  <li className="sidebar-item">
-                    <a className="sidebar-link mb-2"
-                       href="/user/logout">
-                      <i className="align-middle"
-                         dangerouslySetInnerHTML={{__html: feather.icons['log-out'].toSvg()}}/>
-                      <span
-                          style={{marginLeft: '-0.7rem'}}
-                          onClick={() => {
-                            localStorage.removeItem("access_token");
-                            localStorage.removeItem("refresh_token");
-                            localStorage.removeItem("access_token_expires_at");
-                            localStorage.removeItem("refresh_token_expires_at");
-                            localStorage.removeItem("session_id");
-                            localStorage.removeItem("user_email");
-                            window.location.href = "/login";
-                          }}
-                          className="align-middle">Logout</span>
-                    </a>
-                  </li>
-                </ul>
 
+                </ul>
+                <li className="sidebar-item">
+                  <a className="sidebar-link mb-2"
+                     href="/user/logout">
+                    <i className="align-middle"
+                       dangerouslySetInnerHTML={{__html: feather.icons['log-out'].toSvg()}}/>
+                    <span
+                        style={{marginLeft: '-0.7rem'}}
+                        onClick={() => {
+                          localStorage.removeItem("access_token");
+                          localStorage.removeItem("refresh_token");
+                          localStorage.removeItem("access_token_expires_at");
+                          localStorage.removeItem("refresh_token_expires_at");
+                          localStorage.removeItem("session_id");
+                          localStorage.removeItem("user_email");
+                          window.location.href = "/login";
+                        }}
+                        className="align-middle">Logout</span>
+                  </a>
+                </li>
               </div>
             </nav>
           }

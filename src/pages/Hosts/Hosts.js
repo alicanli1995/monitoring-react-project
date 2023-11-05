@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import services from "../../services";
-import {warningAlert} from "../Admin/js/attention";
+import {warningAlert} from "../../partials/pusher-js/attention";
 
 function Hosts() {
 

@@ -1,7 +1,7 @@
 import MonitoringApiServices from './MonitoringApiServices'
 
 const services = {
-  monitoringApiService : new MonitoringApiServices('http://localhost:4000'),
+  monitoringApiService: new MonitoringApiServices(),
 }
 
 export default services

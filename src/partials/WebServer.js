@@ -1,8 +1,8 @@
 import {useContext, useEffect} from 'react';
-import {Prompt, successAlert, warningAlert} from "../pages/Admin/js/attention";
-import Pusher from "../pages/Admin/js/pusher.min";
+import * as attention from "./pusher-js/attention";
+import {successAlert, warningAlert} from "./pusher-js/attention";
+import Pusher from "./pusher-js/pusher.min";
 import {DataContext} from "../components/misc/DataContextProvider";
-import * as attention from "../pages/Admin/js/attention";
 import {dateFormatter} from "../utils/utils";
 
 const WebServer = () => {
@@ -142,7 +142,8 @@ const WebServer = () => {
         }
 
         let newRow = tableRef.tBodies[0].insertRow(-1);
-        newRow.setAttribute("id", "host-service-" + data.status + '-' + data.host_service_id);
+        newRow.setAttribute("id",
+            "host-service-" + data.status + '-' + data.host_service_id);
         let newCell = newRow.insertCell(0);
         newCell.innerHTML = `
             <span class="${data.icon}"></span>

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {dateFormatter} from "../../utils/utils";
 import services from "../../services";
-import {successAlert, warningAlert} from "../Admin/js/attention";
+import {successAlert, warningAlert} from "../../partials/pusher-js/attention";
 
 const ProblemTab = (props) => {
 
@@ -51,24 +51,31 @@ const ProblemTab = (props) => {
                 {hostServices && (hostServices.length > 0 ? hostServices
                 .map((hostService, index) => {
                   return (
-                      <tr id={'host-service-problem-' + hostService.Service.ID}
-                          key={'host-service-problem-'
-                              + hostService.Service.ID}>
-                        <td>
-                          <span className={hostService.Service.Icon}></span>
-                          {" " + hostService.Service.ServiceName + " "}
-                          <span
-                              className="badge bg-info pointer align-middle"
-                              onClick={() => handleCheckNow(index)}
-                              style={{cursor: "pointer"}}
-                          >Check Now</span>
-                        </td>
-                        <td>
-                          {hostService.LastCheck ? dateFormatter(
-                              hostService.LastCheck) : "Pending..."}
-                        </td>
-                        <td></td>
-                      </tr>)
+                      <>
+                        {hostService.Active === 1 &&
+                            <tr id={'host-service-problem-'
+                                + hostService.Service.ID}
+                                key={'host-service-problem-'
+                                    + hostService.Service.ID}>
+                              <td>
+                                <span
+                                    className={hostService.Service.Icon}></span>
+                                {" " + hostService.Service.ServiceName + " "}
+                                <span
+                                    className="badge bg-info pointer align-middle"
+                                    onClick={() => handleCheckNow(index)}
+                                    style={{cursor: "pointer"}}
+                                >Check Now</span>
+                              </td>
+                              <td>
+                                {hostService.LastCheck ? dateFormatter(
+                                    hostService.LastCheck) : "Pending..."}
+                              </td>
+                              <td></td>
+                            </tr>
+                        }
+                      </>
+                  )
                 }) : <tr>
                   <td colSpan="3">No Services</td>
                 </tr>)}

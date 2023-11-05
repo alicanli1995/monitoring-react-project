@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {confirm, successAlert, warningAlert} from "../Admin/js/attention";
+import {confirm, successAlert, warningAlert} from "../../partials/pusher-js/attention";
 import services from "../../services";
 import {FormControl, InputLabel, Select, TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,7 +10,7 @@ const Users = (props) => {
   const [user, setUser] = useState({});
   const [userActive, setUserActive] = useState('');
   const history = useHistory();
-  const [sameUser, setSameUser] = useState(false);
+  const sameUser = localStorage.getItem("user_email") === user.Email;
 
   useEffect(() => {
     services.monitoringApiService.fetchUser(props.match.params.id).then(
@@ -21,8 +21,6 @@ const Users = (props) => {
       warningAlert(err.message)
     });
 
-    localStorage.getItem("user_email") === user.Email ? setSameUser(true)
-        : setSameUser(false)
   }, []);
 
   function handleChange(e) {
@@ -37,7 +35,7 @@ const Users = (props) => {
       FirstName: user.FirstName,
       LastName: user.LastName,
       Email: user.Email,
-      Password: new TextEncoder().encode(user.Password),
+      Password: user.Password,
       UserActive: userActive,
     }
     services.monitoringApiService.updateUser(body, user.ID).then((res) => {

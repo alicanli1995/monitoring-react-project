@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import services from "../../services";
-import {warningAlert} from "../Admin/js/attention";
+import {warningAlert} from "../../partials/pusher-js/attention";
 import HostsTab from "../ContentTabs/HostTab";
 import ManageServiceTab from "../ContentTabs/ManageServiceTab";
 import TabHeaders from "../ContentTabs/TabHeaders";

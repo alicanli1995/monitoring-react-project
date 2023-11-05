@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from "react";
-import "../Admin/css/app.css";
+import "../../css/app.css";
 import services from "../../services";
-import {warningAlert} from "../Admin/js/attention";
+import {warningAlert} from "../../partials/pusher-js/attention";
 import {DataContext} from "../../components/misc/DataContextProvider";
 
 const Home = () => {
   const [hosts, setHosts] = useState([]);
-  const {servicesCount,setServicesCount} = useContext(DataContext)
+  const {servicesCount, setServicesCount} = useContext(DataContext)
 
   useEffect(() => {
     services.monitoringApiService.getAllHosts().then((res) => {

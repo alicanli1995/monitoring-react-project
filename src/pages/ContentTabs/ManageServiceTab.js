@@ -3,7 +3,7 @@ import {Button} from "@mui/material";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faInfo} from '@fortawesome/free-solid-svg-icons/faInfo';
 import services from "../../services";
-import {successAlert} from "../Admin/js/attention";
+import {successAlert} from "../../partials/pusher-js/attention";
 import SwitchButton from "../../components/buttons/SwitchButton";
 
 const ManageServiceTab = (props) => {
@@ -16,7 +16,8 @@ const ManageServiceTab = (props) => {
 
   function handleChangeActive(index) {
     let service = hostServices[index];
-    const value = document.getElementById("active-" + service.ID).checked ? 1 : 0;
+    const value = document.getElementById("active-" + service.ID).checked ? 1
+        : 0;
     let body = {
       host_id: service.HostID,
       service_id: service.ServiceID,
@@ -51,38 +52,30 @@ const ManageServiceTab = (props) => {
                 </thead>
                 <tbody>
                 {hostServices && (hostServices.length > 0 ? hostServices.map(
-                    (hostService,index) => {
+                    (hostService, index) => {
                       return (
                           <>
-                          <tr key={'manage-server-' + hostService.ID}>
-                            <td>
-                              <Button variant="contained"
-                                      size={"small"}
-                                      startIcon={<FontAwesomeIcon
-                                          icon={faInfo}/>}>
-                                {hostService.Service.ServiceName}
-                              </Button>
-                            </td>
-                            <td>
-                              <div className="form-check form-switch">
-                                {/*<input className="form-check-input"*/}
-                                {/*       type="checkbox"*/}
-                                {/*       id={"active-" + hostService.ID}*/}
-                                {/*       datatype="toggle-service"*/}
-                                {/*       checked={hostService.Active === 1}*/}
-                                {/*       onClick={(e) => handleChangeActive(e,index)}*/}
-                                {/*       />*/}
-                                {/*<label className="form-check-label"*/}
-                                {/*       form="active">Active</label>*/}
-                                <SwitchButton
-                                    checked={hostService.Active === 1}
-                                    handleToggle={() => handleChangeActive(index)}
-                                    id={"active-" + hostService.ID}
-                                    label={"Active"}
-                                />
-                              </div>
-                            </td>
-                          </tr>
+                            <tr key={'manage-server-' + hostService.ID}>
+                              <td>
+                                <Button variant="contained"
+                                        size={"small"}
+                                        startIcon={<FontAwesomeIcon
+                                            icon={faInfo}/>}>
+                                  {hostService.Service.ServiceName}
+                                </Button>
+                              </td>
+                              <td>
+                                <div className="form-check form-switch">
+                                  <SwitchButton
+                                      checked={hostService.Active === 1}
+                                      handleToggle={() => handleChangeActive(
+                                          index)}
+                                      id={"active-" + hostService.ID}
+                                      label={"Active"}
+                                  />
+                                </div>
+                              </td>
+                            </tr>
                           </>
                       )
                     }) : <tr>

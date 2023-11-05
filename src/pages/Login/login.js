@@ -2,7 +2,7 @@ import "../../css/login.css";
 import {TextField} from "@mui/material";
 import React from "react";
 import services from "../../services";
-import {errorAlert} from "../Admin/js/attention";
+import {errorAlert} from "../../partials/pusher-js/attention";
 
 const Login = () => {
 
