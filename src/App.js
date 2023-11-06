@@ -17,6 +17,7 @@ import User from "./pages/Users/user";
 import React, {useEffect, useState} from "react";
 import Settings from "./pages/Settings/settings";
 import {NotFoundTitle} from "./pages/Error/NotFoundPage";
+import SideMenu from "./pages/Sidebar/SideMenu";
 
 function App() {
   const [showNav, setShowNav] = useState(
@@ -37,7 +38,7 @@ function App() {
             <Login/>
           </Route>
           {showNav && isAuthenticated ?
-              <Sidebar>
+              <SideMenu>
                 <WebServer/>
                 <Switch>
                   <Route path="/hosts" exact>
@@ -92,7 +93,7 @@ function App() {
                       <NotFoundTitle/>
                   </Route>
                 </Switch>
-              </Sidebar>
+              </SideMenu>
             :
             <Redirect to="/login"/>
           }
