@@ -79,7 +79,6 @@ const Settings = () => {
 
   function handleChange(e) {
     let {id, value} = e.target
-    console.log(e.target)
     if (id === "notify_via_email" || id === "notify_via_sms") {
       const newValue = e.target.checked ? 1 : 0;
       value = newValue.toString()
@@ -106,7 +105,6 @@ const Settings = () => {
     }
 
     setSettings(prefMap)
-    console.log(prefMap)
   }
 
   const handleTabChanges = (e) => {

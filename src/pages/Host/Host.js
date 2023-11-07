@@ -4,29 +4,42 @@ import {warningAlert} from "../../partials/pusher-js/attention";
 import HostsTab from "../ContentTabs/HostTab";
 import ManageServiceTab from "../ContentTabs/ManageServiceTab";
 import TabHeaders from "../ContentTabs/TabHeaders";
-import HealthyTab from "../ContentTabs/HealthyTab";
-import ProblemTab from "../ContentTabs/ProblemTab";
-import WarningTab from "../ContentTabs/WarningTab";
-import PendingTab from "../ContentTabs/PendingTab";
+import StatusTabs from "../ContentTabs/StatusTabs";
+import {publicChannel} from "../../partials/WebServer";
+import * as attention from "../../partials/pusher-js/attention";
 
 function Host(props) {
 
   const [host, setHost] = useState({});
 
-  useEffect(() => {
-    services.monitoringApiService.fetchHost(props.match.params.hostId).then(
+  useEffect(  () => {
+    services.monitoringApiService.fetchHost(
+        props.match.params.hostId).then(
         (res) => {
           setHost(res.data.host)
         }).catch((err) => {
       warningAlert(err.message)
     });
-  }, [props.match.params.hostId]);
+
+    publicChannel.bind("host-service-status-changed",  function (data) {
+      attention.toast({
+        msg: data.message, icon: 'info', timer: 30000, showCloseButton: true,
+      })
+      console.log("here aq")
+      services.monitoringApiService.fetchHost(
+          props.match.params.hostId).then(
+          (res) => {
+            setHost(res.data.host)
+          }).catch((err) => {
+        warningAlert(err.message)
+      });
+    });
+
+  }, []);
 
   const handleTabChanges = (e) => {
-
     let tabList = ['services-tab', 'healthy-tab', 'warning-tab', 'problem-tab',
       'pending-tab', 'host-tab'];
-
     services.monitoringApiService.fetchHost(props.match.params.hostId).then(
         (res) => {
           setHost(res.data.host)
@@ -81,24 +94,20 @@ function Host(props) {
         <div className="row">
           <div className="col">
 
-            <form method="post" action={"/admin/host/" + host.ID} noValidate
-                  className="needs-validation"
-                  id="host-form">
 
+            <div className="tab-content" id="host-tab-content"
+                 style={{minHeight: '58vh'}}>
               <TabHeaders host={host} handleTabChanges={handleTabChanges}/>
 
-              <div className="tab-content" id="host-tab-content"
-                   style={{minHeight: '58vh'}}>
-
-                <HostsTab host={host}/>
-                {host && <ManageServiceTab host={host}/>}
-                {host && <HealthyTab host={host}/>}
-                {host && <ProblemTab host={host}/>}
-                {host && <WarningTab host={host}/>}
-                {host && <PendingTab host={host}/>}
-
-              </div>
-            </form>
+              <HostsTab host={host}/>
+              {host && <ManageServiceTab host={host}/>}
+              {host && ["healthy", "warning", "problem", "pending"].map(
+                  (status, index) => {
+                    return (
+                        <StatusTabs key={index} host={host} status={status}/>
+                    )
+                  })}
+            </div>
           </div>
         </div>
       </>
