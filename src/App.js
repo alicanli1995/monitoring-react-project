@@ -2,7 +2,6 @@ import DataContextProvider from "./components/misc/DataContextProvider";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import Login from "./pages/Login/login";
 import WebServer from "./partials/WebServer";
-import Sidebar from "./pages/Sidebar/Sidebar";
 import Hosts from "./pages/Hosts/Hosts";
 import Host from "./pages/Host/Host";
 import Home from "./pages/Home/Home";
@@ -18,6 +17,7 @@ import React, {useEffect, useState} from "react";
 import Settings from "./pages/Settings/settings";
 import {NotFoundTitle} from "./pages/Error/NotFoundPage";
 import SideMenu from "./pages/Sidebar/SideMenu";
+import ResponseTimeGraph from "./pages/Graphics/response-time-graph";
 
 function App() {
   const [showNav, setShowNav] = useState(
@@ -89,9 +89,13 @@ function App() {
                     return <Settings {...props}/>
                   }}/>
 
-                  <Route path="*" >
-                      <NotFoundTitle/>
-                  </Route>
+                  <Route path="/statistics" exact render={(props) => {
+                    return <ResponseTimeGraph {...props}/>
+                  }}/>
+
+                  <Route path="*" exact render={(props) => {
+                    return <NotFoundTitle {...props}/>
+                  }}/>
                 </Switch>
               </SideMenu>
             :

@@ -5,12 +5,11 @@ export default class MonitoringApiServices {
 
   async toggleMonitoring(body) {
     try {
-      return await instance.post('/admin/preferences/toggle-monitoring',
-          body, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
+      return await instance.post('/admin/preferences/toggle-monitoring', body, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
     } catch (error) {
       throw new Error(error.response.data.errorDetail[0].message)
     }
@@ -30,12 +29,11 @@ export default class MonitoringApiServices {
 
   async updateSystemPref(body) {
     try {
-      return await instance.post('/admin/preferences/set-system-pref',
-          body, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
+      return await instance.post('/admin/preferences/set-system-pref', body, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
     } catch (error) {
       throw new Error(error.response.data.errorDetail[0].message)
     }
@@ -248,14 +246,27 @@ export default class MonitoringApiServices {
 
   async updateSystemSettings(objectForUpdate) {
     try {
-      return await instance.post('/admin/settings',
-          objectForUpdate, {
+      return await instance.post('/admin/settings', objectForUpdate, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      throw new Error(error.response.data.errorDetail[0].message)
+    }
+  }
+
+  async fetchElasticData(indexName, lastXMin, hostID, serviceID) {
+    try {
+      return await instance.get(
+          `/admin/get-documents-in-last-x-minutes/${indexName}/${hostID}/${serviceID}/${lastXMin}`,
+          {
             headers: {
               'Content-Type': 'application/json',
             },
           })
     } catch (error) {
-      throw new Error(error.response.data.errorDetail[0].message)
+      throw new Error(error)
     }
   }
 }

@@ -8,7 +8,7 @@ const Events = () => {
 
   const [events, setEvents] = useState([])
 
-  const columns = [{field: 'id', headerName: 'ID', width: 170},
+  const columns = [{field: 'id', headerName: 'ID', width: 220},
     {field: 'EventType', headerName: 'Event Type', width: 270},
     {field: 'HostName', headerName: 'Host', width: 200}, {
       field: 'ServiceName', headerName: 'Service', width: 170,

@@ -67,7 +67,7 @@ const ManageServiceTab = (props) => {
                               <td>
                                 <div className="form-check form-switch">
                                   <SwitchButton
-                                      checked={hostService.Active === 1}
+                                      checked={hostService.Active}
                                       handleToggle={() => handleChangeActive(
                                           index)}
                                       id={"active-" + hostService.ID}

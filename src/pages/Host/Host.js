@@ -25,7 +25,6 @@ function Host(props) {
       attention.toast({
         msg: data.message, icon: 'info', timer: 30000, showCloseButton: true,
       })
-      console.log("here aq")
       services.monitoringApiService.fetchHost(
           props.match.params.hostId).then(
           (res) => {

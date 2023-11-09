@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import "../../css/app.css";
+import "../../style/app.css";
 import services from "../../services";
 import {warningAlert} from "../../partials/pusher-js/attention";
 import {DataContext} from "../../components/misc/DataContextProvider";

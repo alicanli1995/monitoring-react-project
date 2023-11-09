@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import "../../css/sidebar-new.scss"
+import "../../style/sidebar-new.scss"
 import {AiOutlineSchedule, AiOutlineSetting} from "react-icons/ai"
-import {MdOutlineEventSeat} from "react-icons/md"
+import {MdAnalytics, MdOutlineEventSeat} from "react-icons/md"
 import {BsChevronBarLeft, BsChevronBarRight} from "react-icons/bs"
 import {
   confirm,
@@ -157,7 +157,12 @@ const SideMenu = (props) => {
               <span>Overview</span></a>
             <a rel='noreferrer' href="/hosts">
               <DiGhostSmall/>
-              <span>Hosts</span></a>
+              <span>Hosts</span>
+            </a>
+            <a rel='noreferrer' href="/statistics">
+              <MdAnalytics/>
+              <span>Statistics</span>
+            </a>
             <a rel='noreferrer' href="/events">
               <MdOutlineEventSeat/>
               <span>Events</span></a>
@@ -166,7 +171,8 @@ const SideMenu = (props) => {
               <span>Schedule</span></a>
             <a rel='noreferrer' href="/users">
               <FaUsersRectangle/>
-              <span>Users</span></a>
+              <span>Users</span>
+            </a>
             <a rel='noreferrer' href="/settings">
               <AiOutlineSetting/>
               <span>Settings</span></a>

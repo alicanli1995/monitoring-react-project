@@ -62,7 +62,7 @@ const SwitchButton = (pr) => {
       <>
         <FormControlLabel
             control={<IOSSwitch sx={{m: 1}}/>}
-            checked={pr.checked}
+            checked={pr.checked.toString() === '1'}
             onClick={pr.handleToggle}
             label={<b style={{fontSize: '15px', fontFamily: 'sans-serif'}}>
               {pr.label}
