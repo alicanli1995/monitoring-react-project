@@ -26,11 +26,14 @@ const ResponseTimeGraph = () => {
 
   const handleFetchStats = (e) => {
     const serviceID = e.target.value
-    console.log("serviceID", serviceID, "selectedHost?.ID", selectedHost?.ID)
     services.monitoringApiService.fetchElasticData("performances", 15,
         selectedHost?.ID, serviceID).then((response) => {
-      setData(response.data)
-      console.log("response.data", response.data)
+      setData((prevData) => {
+        if (prevData.length > 0) {
+          return [...response.data, ...prevData]
+        }
+        return response.data
+      })
       setSelectedService(hostServices.find((hs) => hs.ID === serviceID))
     }).catch((error) => {
       warningAlert(error.response.data.message)
@@ -47,11 +50,15 @@ const ResponseTimeGraph = () => {
     publicChannel.bind("host-service-check-response", function (newData) {
       if (selectedService && newData !== undefined
           && newData.service_info.HostServices?.ID === selectedService.ID) {
-        setData((prevData) => {
-          return [newData.service_info,...prevData]
-        })
+        if (data.length > 0) {
+          setData((prevData) => {
+            return [newData.service_info, ...prevData]
+          })
+        } else if (data.length === 0) {
+          setData([newData.service_info])
+        }
       }
-    });
+    })
   }, [selectedService]);
 
   return (

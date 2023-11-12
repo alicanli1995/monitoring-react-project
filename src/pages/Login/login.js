@@ -1,6 +1,6 @@
 import "../../style/new-login.css"
 import services from "../../services";
-import {errorAlert} from "../../components/notify/attention";
+import {errorAlert, successAlert} from "../../components/notify/attention";
 
 const Login = () => {
 
@@ -30,6 +30,25 @@ const Login = () => {
   }
 
   const handleRegister = () => {
+    const body = {
+      name: document.getElementById("name").value,
+      surname: document.getElementById("surname").value,
+      email: document.getElementById("email-register").value,
+      password: document.getElementById("password-register").value,
+    }
+
+    services.monitoringApiService.registerUser(body).then((res) => {
+      if (res.data.ok === true) {
+        successAlert(res.data.message)
+        setTimeout(() => {
+          window.location.href = "/login"
+        }, 3000)
+      } else {
+        errorAlert(res.data.message)
+      }
+    }).catch((err) => {
+      errorAlert(err.message)
+    });
 
   }
 
@@ -62,8 +81,7 @@ const Login = () => {
                      style={{cursor: "pointer"}}></i>
                 </div>
 
-                <button placeholder="Sign in"
-                        className="btn-new solid">Login
+                <button placeholder="Sign in" className="btn-new solid">Login
                 </button>
 
               </form>
@@ -71,31 +89,39 @@ const Login = () => {
 
               <form action="" className="sign-up-form">
                 <h2 className="title">Register</h2>
+
                 <div className="input-field">
                   <i className="fas fa-user"></i>
-                  <input type="text" name="usuario" autoComplete="off"
-                         placeholder="Email" required="yes"/>
+                  <input type="text" name="name" autoComplete="name"
+                         id={"name"} placeholder="Name" required="yes"/>
                 </div>
+
+                <div className="input-field">
+                  <i className="fas fa-dot-circle"></i>
+                  <input type="text" name="surname" autoComplete="surname"
+                         id="surname" placeholder="Surname" required="yes"/>
+                </div>
+
                 <div className="input-field">
                   <i className="fas fa-envelope"></i>
                   <input type="email" name="correo" autoComplete="email"
-                         placeholder="Email" required="yes"/>
+                         id="email-register" placeholder="Email"
+                         required="yes"/>
                 </div>
                 <div className="input-field">
                   <i className="fas fa-lock"></i>
                   <input type="password" name="password"
                          autoComplete="current-password" placeholder="Password"
-                         id="id_reg" required="yes"/>
+                         id="password-register" required="yes"/>
                   <i className="far fa-eye" id="toggleReg"
                      style={{cursor: "pointer"}}></i>
                 </div>
 
-                <label className="check">
-                  <input type="checkbox" checked="checked"/>
-                  <span className="checkmark">I accept the <a
-                      href="terms.html">terms and services</a></span>
-                </label>
-                <input type="submit" value="Create account"
+                <input type="button" value="Create account"
+                       onClick={(e) => {
+                         e.preventDefault()
+                         handleRegister()
+                       }}
                        className="btn-new solid"/>
 
               </form>

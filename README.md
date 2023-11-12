@@ -1,5 +1,16 @@
 # Monitoring Project - 👁 Observer
 
+## 📖 Table of Contents
+
+- [📝 Description](#-description)
+- [📦 Installation](#-installation)
+- [🚀 Running the app](#-running-the-app)
+- [📚 Packages](#-packages)
+- [🗒 Pages](#-pages)
+- [📝 Notes](#-notes)
+- [📸 Screenshots](#-screenshots)
+- [👨‍💻 Author](#-author)
+
 ## 📝 Description
 
 This project is a simple monitoring system that uses the Observer to monitor the

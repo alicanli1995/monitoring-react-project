@@ -269,6 +269,18 @@ export default class MonitoringApiServices {
       throw new Error(error)
     }
   }
+
+  async registerUser(body) {
+    try {
+      return await instance.post('/register', body, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
 }
 
 const instance = axios.create({baseURL: "http://localhost:4000"});
