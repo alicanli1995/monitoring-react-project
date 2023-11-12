@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {dateFormatter} from "../../utils/utils";
-import {successAlert, warningAlert} from "../../partials/pusher-js/attention";
+import {successAlert, warningAlert} from "../../components/notify/attention";
 import services from "../../services";
 
 const ServiceTab = (props) => {

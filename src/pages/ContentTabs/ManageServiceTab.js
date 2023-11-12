@@ -3,7 +3,7 @@ import {Button} from "@mui/material";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faInfo} from '@fortawesome/free-solid-svg-icons/faInfo';
 import services from "../../services";
-import {successAlert} from "../../partials/pusher-js/attention";
+import {successAlert} from "../../components/notify/attention";
 import SwitchButton from "../../components/buttons/SwitchButton";
 
 const ManageServiceTab = (props) => {

@@ -1,6 +1,5 @@
 import DataContextProvider from "./components/misc/DataContextProvider";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import Login from "./pages/Login/login";
 import WebServer from "./partials/WebServer";
 import Hosts from "./pages/Hosts/Hosts";
 import Host from "./pages/Host/Host";
@@ -18,6 +17,7 @@ import Settings from "./pages/Settings/settings";
 import {NotFoundTitle} from "./pages/Error/NotFoundPage";
 import SideMenu from "./pages/Sidebar/SideMenu";
 import ResponseTimeGraph from "./pages/Graphics/response-time-graph";
+import Login from "./pages/Login/login";
 
 function App() {
   const [showNav, setShowNav] = useState(

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import services from "../../services";
-import {warningAlert} from "../../partials/pusher-js/attention";
+import {warningAlert} from "../../components/notify/attention";
 
 function Hosts() {
 
@@ -53,8 +53,16 @@ function Hosts() {
                           <td><a href={'/host/' + host.ID}>{host.HostName}</a>
                           </td>
                           <td>
-                            <span
-                                className="badge bg-info">{host.HostServices[0].Service.ServiceName}</span>
+                            {host.HostServices.map((hs) => {
+                              return (
+                                  <>
+                                  <span
+                                      className="badge bg-info">{hs.Service.ServiceName}
+                                  </span>
+                                  <>&nbsp;</>
+                                  </>
+                              )
+                            })}
                           </td>
                           <td>{host.OS}</td>
                           <td>{host.Location}</td>

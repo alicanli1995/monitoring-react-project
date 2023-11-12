@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {confirm, successAlert, warningAlert} from "../../partials/pusher-js/attention";
+import {confirm, successAlert, warningAlert} from "../../components/notify/attention";
 import services from "../../services";
 import {FormControl, InputLabel, Select, TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";

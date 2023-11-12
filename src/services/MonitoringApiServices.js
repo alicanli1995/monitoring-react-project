@@ -1,5 +1,5 @@
 import axios from "axios";
-import {errorAlert} from "../partials/pusher-js/attention";
+import {errorAlert} from "../components/notify/attention";
 
 export default class MonitoringApiServices {
 

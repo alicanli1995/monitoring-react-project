@@ -7,7 +7,7 @@ import {
   confirm,
   successAlert,
   warningAlert
-} from "../../partials/pusher-js/attention";
+} from "../../components/notify/attention";
 import services from "../../services";
 import {TfiEye} from "react-icons/tfi";
 import {SlHome} from "react-icons/sl";
@@ -139,13 +139,11 @@ const SideMenu = (props) => {
         <div id="side-bar-spec" className={active ? "active" : ""}>
           <div className="top-icons">
             <div onClick={() => setActive(!active)}>
-              {
-                active ? <BsChevronBarRight/> : <BsChevronBarLeft/>
-              }
+              {active ? <BsChevronBarRight/> : <BsChevronBarLeft/>}
             </div>
           </div>
           <div className="top">
-            <div className={!active ? "logo ml-4" : "logo"}>
+            <div className={!active ? "logo ml-4" : "logo ml-1"}>
               {<TfiEye size="32"/>}
             </div>
             <div className="line"></div>
@@ -189,8 +187,7 @@ const SideMenu = (props) => {
               }}>Logout</span>
             </a>
 
-            <hr className={"mt-4"}/>
-            <div className="circle">
+            <div className="circle mt-6">
               <span className="circle__btn">
                 <IonIcon icon={CustomPlayIcon} className={"play"}
                          id={"monitoring-live"}
@@ -210,7 +207,6 @@ const SideMenu = (props) => {
               <span className="circle__back-1"></span>
               <span className="circle__back-2"></span>
             </div>
-            <hr/>
 
           </div>
 

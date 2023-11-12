@@ -12,7 +12,7 @@ import {TextField} from "@mui/material";
 import SwitchButton from "../../components/buttons/SwitchButton";
 import {useHistory} from "react-router-dom";
 import services from "../../services";
-import {successAlert, warningAlert} from "../../partials/pusher-js/attention";
+import {successAlert, warningAlert} from "../../components/notify/attention";
 import {checkObjectEquality} from "../../utils/utils";
 
 const HostTab = (props) => {
@@ -35,7 +35,9 @@ const HostTab = (props) => {
       const value = e.target.checked ? 1 : 0;
       setHost({...host, [e.target.id]: value})
     }
-    checkHostChangeOrNot();
+    if (host.ID > 0) {
+      checkHostChangeOrNot();
+    }
   }
 
   const checkHostChangeOrNot = () => {
@@ -209,7 +211,7 @@ const HostTab = (props) => {
                 <SwitchButton
                     label="Active"
                     id="Active"
-                    checked={host?.Active ? host.Active : false}
+                    checked={host?.Active ? host.Active : '0'}
                     handleToggle={(e) => {
                       handleChange(e)
                     }}
@@ -226,7 +228,7 @@ const HostTab = (props) => {
                              variant="contained" ref={anchorRef}
                              aria-label="split button">
                   <Button
-                      disabled={anyChanges}
+                      disabled={host?.ID > 0 ? anyChanges : false}
                       onClick={handleClick}>{options[selectedIndex]}</Button>
                   <Button
                       size="small"

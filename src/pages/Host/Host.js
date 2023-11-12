@@ -1,12 +1,12 @@
 import {useEffect, useState} from "react";
 import services from "../../services";
-import {warningAlert} from "../../partials/pusher-js/attention";
+import {warningAlert} from "../../components/notify/attention";
 import HostsTab from "../ContentTabs/HostTab";
 import ManageServiceTab from "../ContentTabs/ManageServiceTab";
 import TabHeaders from "../ContentTabs/TabHeaders";
 import StatusTabs from "../ContentTabs/StatusTabs";
 import {publicChannel} from "../../partials/WebServer";
-import * as attention from "../../partials/pusher-js/attention";
+import * as attention from "../../components/notify/attention";
 
 function Host(props) {
 

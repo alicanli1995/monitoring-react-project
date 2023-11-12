@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import services from "../../services";
-import {warningAlert} from "../../partials/pusher-js/attention";
+import {warningAlert} from "../../components/notify/attention";
 import StickyHeadTable from "../../components/table/TableWithPaginations";
 import {Badge} from "@mui/material";
 import {useHistory} from "react-router-dom";

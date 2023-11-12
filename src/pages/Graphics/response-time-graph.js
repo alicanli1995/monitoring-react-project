@@ -1,42 +1,58 @@
 import React, {useEffect, useState} from "react";
 import services from "../../services";
-import {warningAlert} from "../../partials/pusher-js/attention";
+import {warningAlert} from "../../components/notify/attention";
 import {FormControl, Grid, Select} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import {LineChart} from '@mui/x-charts/LineChart';
+import {Card, CardBody, CardTitle} from "reactstrap"
+import SplineArea from "../../components/charts/SplineArea";
+import Pie from "../../components/charts/Pie";
+import {publicChannel} from "../../partials/WebServer";
 
 const ResponseTimeGraph = () => {
 
-  const [data, setData] = useState([])
   const [hosts, setHosts] = useState([])
   const [hostServices, setHostServices] = useState([])
   const [selectedHost, setSelectedHost] = useState()
-
-  useEffect(() => {
-    services.monitoringApiService.fetchHosts().then((response) => {
-      setHosts(response.data.hosts)
-      setHostServices(response.data.hosts[0].HostServices)
-      console.log(response.data.hosts[0].HostServices)
-    }).catch((error) => {
-      warningAlert(error.response.data.message)
-    })
-  }, []);
+  const [selectedService, setSelectedService] = useState()
+  const [data, setData] = useState([])
 
   const handleChange = (e) => {
     const hostID = e.target.value
+    setData([])
+    setSelectedService(null)
+    setHostServices(hosts.find((host) => host.ID === hostID).HostServices)
     setSelectedHost(hosts.find((host) => host.ID === hostID))
   }
 
   const handleFetchStats = (e) => {
     const serviceID = e.target.value
+    console.log("serviceID", serviceID, "selectedHost?.ID", selectedHost?.ID)
     services.monitoringApiService.fetchElasticData("performances", 15,
         selectedHost?.ID, serviceID).then((response) => {
       setData(response.data)
-      console.log(response.data)
+      console.log("response.data", response.data)
+      setSelectedService(hostServices.find((hs) => hs.ID === serviceID))
     }).catch((error) => {
       warningAlert(error.response.data.message)
     })
   }
+
+  useEffect(() => {
+    services.monitoringApiService.fetchHosts().then((response) => {
+      setHosts(response.data.hosts)
+    }).catch((error) => {
+      warningAlert(error.response.data.message)
+    })
+
+    publicChannel.bind("host-service-check-response", function (newData) {
+      if (selectedService && newData !== undefined
+          && newData.service_info.HostServices?.ID === selectedService.ID) {
+        setData((prevData) => {
+          return [newData.service_info,...prevData]
+        })
+      }
+    });
+  }, [selectedService]);
 
   return (
       <>
@@ -51,11 +67,17 @@ const ResponseTimeGraph = () => {
           </div>
         </div>
 
-        <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
+        <Grid container spacing={2}>
           <Grid item xs={6}>
-            <span> Select a Host</span>
-            <div className="input-group">
-              <FormControl style={{width: '90%'}} size={"small"}>
+            <div style={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}>
+              <span> Select a Host</span>
+            </div>
+            <div style={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}>
+              <FormControl style={{width: '25%'}} size={"small"}>
                 <Select
                     id="host"
                     name="host"
@@ -92,84 +114,93 @@ const ResponseTimeGraph = () => {
           {selectedHost &&
               <Grid item xs={6}>
                 <>
-                  <div className="input-group">
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
                     <span> Select a Service</span>
-                    <div className="input-group">
-                      <FormControl style={{width: '90%'}} size={"small"}>
-                        <Select
-                            id="host"
-                            name="host"
-                            style={
-                              {
-                                width: '100%',
-                                height: '40px',
-                                fontSize: '14px',
-                                fontWeight: '500',
-                                color: '#6c757d',
-                                border: '1px solid #ced4da',
-                                borderRadius: '4px',
-                                backgroundColor: '#fff',
-                                backgroundImage: 'none',
-                                boxShadow: 'inset 0 1px 1px rgb(0 0 0 / 8%)',
-                                transition: 'border-color .15s ease-in-out,box-shadow .15s ease-in-out',
-                                padding: '0 .75rem',
-                                lineHeight: '1.5',
-                              }
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                    <FormControl style={{width: '25%'}} size={"small"}>
+                      <Select
+                          id="host"
+                          name="host"
+                          style={
+                            {
+                              width: '100%',
+                              height: '40px',
+                              fontSize: '14px',
+                              fontWeight: '500',
+                              alignItems: 'center',
+                              color: '#6c757d',
+                              border: '1px solid #ced4da',
+                              borderRadius: '4px',
+                              backgroundColor: '#fff',
+                              backgroundImage: 'none',
+                              boxShadow: 'inset 0 1px 1px rgb(0 0 0 / 8%)',
+                              transition: 'border-color .15s ease-in-out,box-shadow .15s ease-in-out',
+                              padding: '0 .75rem',
+                              lineHeight: '1.5',
                             }
-                            onChange={(e) => handleFetchStats(e)}
-                        >
-                          {hostServices && hostServices.map((hs) => {
-                            return (
-                                <MenuItem key={hs.Service?.ID}
-                                          value={hs.Service?.ID}>{hs.Service?.ServiceName}
-                                </MenuItem>
-                            )
-                          })}
-                        </Select>
-                      </FormControl>
-                    </div>
+                          }
+                          onChange={(e) => handleFetchStats(e)}
+                      >
+                        {hostServices && hostServices.map((hs) => {
+                          return (
+                              <MenuItem key={hs.ID}
+                                        value={hs.ID}>
+                                {hs.Service?.ServiceName}
+                              </MenuItem>
+                          )
+                        })}
+                      </Select>
+                    </FormControl>
                   </div>
                 </>
               </Grid>
           }
         </Grid>
 
-        {data && data.length > 1 &&
+        {data && selectedService && data.length > 0 &&
             <>
-              <Grid container rowSpacing={1}
-                    columnSpacing={{xs: 1, sm: 2, md: 3}}>
-                <Grid item xs={5}/>
-                <Grid item xs={6}>
-                  <h5 className="mt-4"><span
-                      style={{color: "red",
-                        fontSize: "15px",
-                        fontWeight: "bold"
-                      }}> Response Time => ResponseTime / Date</span></h5>
-                </Grid>
-              </Grid>
-              <LineChart
-                  tooltip={{enabled: true}}
-                  xAxis={[
-                    {
-                      dataKey: 'Time',
-                      valueFormatter: (v) => new Date(v).getHours() + ':'
-                          + new Date(v).getMinutes() + ':' + new Date(
-                              v).getSeconds(),
-                      min: new Date(data[0].CreatedAt),
-                      max: new Date(data[data.length - 1].CreatedAt),
-                      data: data.map((d) => new Date(d.CreatedAt)),
-                    },
-                  ]}
-                  series={[
-                    {
-                      data: data.map((d) => d.TotalTime / 1000000),
-                      valueFormatter: (v) => v + ' ms',
-                    },
-                  ]}
-                  width={1600}
-                  height={300}
-              />
+              <Card>
+                <CardBody>
+                  <Grid container rowSpacing={1}
+                        columnSpacing={{xs: 1, sm: 2, md: 3}}>
+                    <Grid item xs={6}>
+                      <CardTitle className="mt-4" style={{
+                        padding: '0 17rem',
+                      }}> Millisecond & Time </CardTitle>
+                      <SplineArea dataColors='["--bs-primary"]' data={data}/>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CardTitle className={"mt-4"} style={{
+                        padding: '0 21rem',
+                      }}>Pie Chart</CardTitle>
+                      <Pie
+                          dataColors='["--bs-success","--bs-danger"]'
+                          data={data}
+                      />
+                    </Grid>
+                  </Grid>
+                </CardBody>
+              </Card>
+
             </>
+        }
+        {(selectedService && (data === null || data.length === 0)) &&
+            <div className="row mt-3" style={{width: '96.5%'}}>
+              <div className="col">
+                <div className="alert alert-danger" role="alert">
+                  No data to display
+                </div>
+              </div>
+            </div>
         }
       </>
   )

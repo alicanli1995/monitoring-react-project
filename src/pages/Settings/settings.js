@@ -1,7 +1,7 @@
 import {FormControl, Select, TextField} from "@mui/material";
 import React, {useEffect, useRef, useState} from "react";
 import services from "../../services";
-import {successAlert, warningAlert} from "../../partials/pusher-js/attention";
+import {successAlert, warningAlert} from "../../components/notify/attention";
 import SwitchButton from "../../components/buttons/SwitchButton";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
@@ -12,6 +12,9 @@ import Paper from "@mui/material/Paper";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
+import {MdMarkEmailUnread, MdSms} from "react-icons/md";
+import {AiFillNotification} from "react-icons/ai";
+import {FaArrowsToEye} from "react-icons/fa6";
 
 const Settings = () => {
 
@@ -159,24 +162,27 @@ const Settings = () => {
               <li className="nav-item">
                 <a className="nav-link active" data-target="" data-toggle="tab"
                    onClick={() => handleTabChanges('general-tab')}
-                   id="general-tab" role="tab">General</a>
+                   id="general-tab" role="tab"><FaArrowsToEye size={"16"} style={
+                  {marginBottom: "3px"}}/> General</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" data-target="" data-toggle="tab"
                    onClick={() => handleTabChanges('notify-tab')}
-                   id="notify-tab" role="tab">Notifications</a>
+                   id="notify-tab" role="tab"><AiFillNotification size={"16"} style={
+                  {marginBottom: "3px"}}/> Notifications</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" data-target="" data-toggle="tab"
                    onClick={() => handleTabChanges('mail-tab')}
-                   id="mail-tab" role="tab"><i
-                    className="fas fa-envelope"></i> Settings</a>
+                   id="mail-tab" role="tab"><MdMarkEmailUnread size={"16"} style={
+                    {marginBottom: "3px"}}/> Mail
+                </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" data-target="" data-toggle="tab"
                    onClick={() => handleTabChanges('sms-tab')}
-                   id="sms-tab" role="tab"><i
-                    className="fas fa-sms"></i> Settings</a>
+                   id="sms-tab" role="tab"><MdSms size={"16"} style={
+                  {marginBottom: "3px"}}/> SMS</a>
               </li>
             </ul>
 
@@ -233,7 +239,7 @@ const Settings = () => {
                                       id="notify_via_email"
                                       checked={settings.filter(item => item.Name
                                               === "notify_via_email")[0]?.Preference
-                                          === "1"}
+                                          === "1" ? 1 : 0}
                                       handleToggle={(e) => {
                                         handleChange(e)
                                       }}
@@ -246,7 +252,7 @@ const Settings = () => {
                                       id="notify_via_sms"
                                       checked={settings.filter(item => item.Name
                                               === "notify_via_sms")[0]?.Preference
-                                          === "1"}
+                                          === "1" ? 1 : 0}
                                       handleToggle={(e) => {
                                         handleChange(e)
                                       }}
