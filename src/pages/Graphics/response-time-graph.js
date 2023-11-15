@@ -7,6 +7,7 @@ import {Card, CardBody, CardTitle} from "reactstrap"
 import SplineArea from "../../components/charts/SplineArea";
 import Pie from "../../components/charts/Pie";
 import {publicChannel} from "../../partials/WebServer";
+import {Triangle} from "react-loader-spinner";
 
 const ResponseTimeGraph = () => {
 
@@ -15,6 +16,7 @@ const ResponseTimeGraph = () => {
     const [selectedHost, setSelectedHost] = useState()
     const [selectedService, setSelectedService] = useState(null)
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const handleChange = (e) => {
         const hostID = e.target.value
@@ -31,7 +33,6 @@ const ResponseTimeGraph = () => {
             if (!response.data) {
                 setData([])
                 setSelectedService(hostServices.find((hs) => hs.ID === serviceID))
-                warningAlert("No data to display")
                 return
             }
             setData(response.data)
@@ -164,7 +165,13 @@ const ResponseTimeGraph = () => {
                                                 lineHeight: '1.5',
                                             }
                                         }
-                                        onChange={(e) => handleFetchStats(e)}
+                                        onChange={(e) => {
+                                            setLoading(true)
+                                            handleFetchStats(e)
+                                            setTimeout(() => {
+                                                setLoading(false)
+                                            }, 2000)
+                                        }}
                                     >
                                         {hostServices?.map((hs) => {
                                             return (
@@ -182,7 +189,22 @@ const ResponseTimeGraph = () => {
                 }
             </Grid>
 
-            {data && selectedService && data?.length > 0 &&
+            {loading === true ?
+                <div className="row" style={{width: '96.5%', marginLeft: "45rem", marginTop: "15rem"}}>
+                    <Triangle
+                        height="80"
+                        width="80"
+                        color="#4fa94d"
+                        ariaLabel="triangle-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                    />
+                </div>
+                : null
+            }
+
+            {!loading &&data && selectedService && data?.length > 0 &&
                 <Card>
                     <CardBody>
                         <Grid container rowSpacing={1}
@@ -206,7 +228,8 @@ const ResponseTimeGraph = () => {
                     </CardBody>
                 </Card>
             }
-            {(selectedService && (data === null || data?.length === 0)) &&
+
+            {!loading && (selectedService && (data === null || data?.length === 0)) &&
                 <div className="row mt-3" style={{width: '96.5%'}}>
                     <div className="col">
                         <div className="alert alert-danger" role="alert">

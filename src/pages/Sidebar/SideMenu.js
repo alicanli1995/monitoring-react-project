@@ -220,7 +220,11 @@ const SideMenu = (props) => {
                 <div className="col-12">
                   <div className="card">
 
-                    <div className="card-body">
+                    <div className="card-body" style={
+                        {
+                            minHeight: "calc(95vh - 120px)",
+                        }
+                    }>
                       {props.children}
                     </div>
                   </div>
