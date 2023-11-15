@@ -60,14 +60,12 @@ const Pie = (props) => {
     ],
   };
   return (
-      <React.Fragment>
-        <ReactEcharts style={{
-          height: "350px",
-          width: "400px",
-          marginLeft: "13rem",
-          marginTop: "1rem"
-        }} option={options}/>
-      </React.Fragment>
+      <ReactEcharts style={{
+        height: "350px",
+        width: "400px",
+        marginLeft: "13rem",
+        marginTop: "1rem"
+      }} option={options}/>
   );
 };
 export default Pie;

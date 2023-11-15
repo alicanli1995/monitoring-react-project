@@ -53,7 +53,7 @@ function Hosts() {
                           <td><a href={'/host/' + host.ID}>{host.HostName}</a>
                           </td>
                           <td>
-                            {host.HostServices.map((hs) => {
+                            {host && host.HostServices?.map((hs) => {
                               return (
                                   <>
                                   <span

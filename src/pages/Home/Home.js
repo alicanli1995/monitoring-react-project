@@ -41,10 +41,13 @@ const Home = () => {
 
         <div className="row">
           {statusArray.map((status) => {
-            return (<div className="col-xl-3 col-md-6">
-              <HomepageStatus status={status}
-                              servicesCount={servicesCount}/>
-            </div>)
+            return (
+                <div className="col-xl-3 col-md-6"
+                     key={'status-' + status}>
+                  <HomepageStatus status={status}
+                                  servicesCount={servicesCount}/>
+                </div>
+            )
           })}
         </div>
 
@@ -70,13 +73,13 @@ const Home = () => {
                                 <a href={"/host/" + host.ID}>{host.HostName}</a>
                               </td>
                               <td>
-                                {host.HostServices.map((hostService) => {
+                                {host.HostServices?.map((hostService) => {
                                   return (
                                       <>
                                       <span className="badge bg-info ml-1">
                                         {hostService.Service.ServiceName}
                                       </span>
-                                        <>&nbsp;</>
+                                        &nbsp;
                                       </>
                                   )
                                 })}
