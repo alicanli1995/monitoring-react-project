@@ -70,9 +70,9 @@ inset -.2rem -.2rem .5rem var(--white);
   &__back-1 {
     box-shadow: .2rem .2rem .4rem ,
     -.2rem -.2rem .4rem ;
-    background: #8E0E00;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #8E0E00;
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);
+    background: linear-gradient(to right, #1F1C18, #8E0E00);
     animation: waves 2s linear infinite;
 
     &.paused {
@@ -93,7 +93,7 @@ inset -.2rem -.2rem .5rem var(--white);
 
 @keyframes waves {
   0% {
-    transform: scale(1);
+    transform: scale(0.5);
     opacity: 1;
   }
 
@@ -102,7 +102,7 @@ inset -.2rem -.2rem .5rem var(--white);
   }
 
   100% {
-    transform: scale(3);
+    transform: scale(2);
     opacity: 0;
   }
 }
@@ -116,9 +116,9 @@ inset -.2rem -.2rem .5rem var(--white);
   color: white;
   font-family: 'Poppins', sans-serif;
 
-  background: #232526;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #232526;
+  background: -webkit-linear-gradient(to left, #414345, #232526);
+  background: linear-gradient(to left, #414345, #232526);
 
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 
@@ -131,9 +131,9 @@ inset -.2rem -.2rem .5rem var(--white);
   justify-content: right;
   font-family: 'Poppins', sans-serif;
 
-  background: #2c3e50; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #3498db, #2c3e50); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #3498db, #2c3e50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #2c3e50;
+  background: -webkit-linear-gradient(to right, #3498db, #2c3e50);
+  background: linear-gradient(to right, #3498db, #2c3e50);
 
 }
 
@@ -218,13 +218,10 @@ inset -.2rem -.2rem .5rem var(--white);
   gap: 2rem;
 
   > a {
-    padding: 0.5rem 0;
     text-decoration: none;
     color: white;
-    padding-left: 0.3rem;
-    border-radius: 10px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    padding: 0.5rem 0 0.5rem 0.3rem;
+    border-radius: 10px 10px 0 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.058);
     transition: all 500ms ease-in-out;
     font-weight: 300;

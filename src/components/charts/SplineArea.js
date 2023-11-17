@@ -19,6 +19,7 @@ const SpineArea = (props) => {
       categories: data?.map((d) => new Date(d.CreatedAt).getTime()),
       labels: {
         format: "HH:mm",
+        datetimeUTC: false,
       },
       offsetX: 0,
     },
@@ -63,6 +64,7 @@ const SpineArea = (props) => {
         categories: props.data?.map((d) => new Date(d.CreatedAt).getTime()),
         labels: {
           format: "HH:mm",
+          datetimeUTC: false,
         },
         offsetX: 0,
       },
