@@ -1,6 +1,7 @@
 import "../../style/new-login.css"
 import services from "../../services";
 import {errorAlert, successAlert} from "../../components/notify/attention";
+import {Icon} from "@iconify/react";
 
 const Login = () => {
 
@@ -63,6 +64,7 @@ const Login = () => {
                 e.preventDefault()
                 handleLogin()
               }}>
+                <Icon icon="mdi:monitor-eye" fontSize={50} className={"mb-3"}/>
                 <h2 className="title">Login</h2>
                 <div className="input-field">
                   <i className="fas fa-user"></i>
@@ -88,6 +90,7 @@ const Login = () => {
 
 
               <form action="" className="sign-up-form">
+                <Icon icon="mdi:monitor-eye" fontSize={50} className={"mb-3"}/>
                 <h2 className="title">Register</h2>
 
                 <div className="input-field">
@@ -131,8 +134,9 @@ const Login = () => {
             <div className="panel left-panel">
               <div className="content">
                 <h3>You don't have an account?</h3>
-                <p>Create your account right now to follow people and like
-                  publications</p>
+                <p>
+                  Create your account right now to check your hosts health checks and visualize your statistics
+                </p>
                 <button className="btn-new transparent" id="sign-up-btn"
                         onClick={() => {
                           document.querySelector('.container').classList.add(
@@ -146,8 +150,9 @@ const Login = () => {
             <div className="panel right-panel">
               <div className="content">
                 <h3>Already have an account?</h3>
-                <p>Login to see your notifications and post your favorite
-                  photos</p>
+                <p>
+                  Login to see your hosts health checks and visualize your statistics
+                </p>
                 <button className="btn-new transparent" id="sign-in-btn"
                         onClick={() => {
                           document.querySelector('.container').classList.remove(

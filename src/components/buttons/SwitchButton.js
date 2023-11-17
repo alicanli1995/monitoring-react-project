@@ -67,9 +67,7 @@ const SwitchButton = (pr) => {
             label={<b style={{fontSize: '15px', fontFamily: 'sans-serif'}}>
               {pr.label}
             </b>}
-            style={{
-              maxHeight: '10px', marginTop: '7px', marginRight: '6px',
-            }}
+            style={pr.style}
         />
       </>
   )

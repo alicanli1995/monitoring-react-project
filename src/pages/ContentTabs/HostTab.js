@@ -208,7 +208,7 @@ const HostTab = (props) => {
                         />
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 ml-1">
                         <SwitchButton
                             label="Active"
                             id="Active"
