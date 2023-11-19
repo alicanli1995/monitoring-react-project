@@ -21,11 +21,13 @@ const Events = () => {
 
   useEffect(() => {
     services.monitoringApiService.fetchEvents().then((response) => {
-      response.data.map((event) => {
-        event.CreatedAt = dateFormatter(event.CreatedAt)
-        event.id = event.ID
-      })
-      setEvents(response.data)
+        if (response.data !== null) {
+            response.data?.map((event) => {
+                event.CreatedAt = dateFormatter(event.CreatedAt)
+                event.id = event.ID
+            })
+            setEvents(response.data)
+        }
     }).catch((error) => {
       warningAlert(error.response.data.message)
     })
